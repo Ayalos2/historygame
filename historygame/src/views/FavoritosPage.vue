@@ -1,18 +1,11 @@
 <template>
-    <HeaderTemplate />
-    <h1>favoritos</h1>
-    <FooterTemplate />
+    <h1>Favoritos</h1>
 </template>
 
 <script>
-import FooterTemplate from '@/components/FooterTemplate.vue';
-import HeaderTemplate from '@/components/HeaderTemplate.vue';
 
     export default {
-        name: 'FavoritosPage',
-        components :{
-            HeaderTemplate,FooterTemplate
-        }
+        name: 'FavoritosPage'
     }
 </script>
 
