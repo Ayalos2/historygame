@@ -3,10 +3,10 @@
         <img src="../assets/logo.png" alt="Logo" class="logo">
         <nav>
             <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Jogos</a></li>
-            <li><a href="#">Favoritos</a></li>
-            <li><a href="#">Sobre</a></li>
+            <li><router-link to="/">Inicial</router-link></li>
+            <li><router-link to="/jogos">Jogos</router-link></li>
+            <li><router-link to="/favoritos">Favoritos</router-link></li>
+            <li><router-link to="/sobre">Sobre</router-link></li>
             </ul>
         </nav>
         <button class="login">Log in</button>

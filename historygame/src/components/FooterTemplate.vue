@@ -1,5 +1,6 @@
 <template>
     <footer>
+        <h1>footer</h1>
     </footer>
 </template>
 
@@ -8,3 +9,7 @@
         name: 'FooterTemplate'
     }
 </script>
+
+<style scoped>
+
+</style>

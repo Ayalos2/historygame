@@ -1,15 +1,15 @@
 <template>
     <HeaderTemplate />
-
+    <h1>Jogos</h1>
     <FooterTemplate />
 </template>
 
 <script>
-    import FooterTemplate from '../views/FooterTemplate.vue';
-    import HeaderTemplate from '../views/HeaderTemplate.vue'
+    import FooterTemplate from '../components/FooterTemplate.vue';
+    import HeaderTemplate from '../components/HeaderTemplate.vue';
 
     export default {
-        name: 'HomePage',
+        name: 'JogosPage',
         components: {
             HeaderTemplate, FooterTemplate
         }
