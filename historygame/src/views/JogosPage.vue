@@ -1,11 +1,15 @@
 <template>
-    <h1>Jogos</h1>
-
+    <card-component />
 </template>
 
 <script>
+import CardComponent from '@/components/cardComponent.vue';
+
 
     export default {
-        name: 'JogosPage'
+        name: 'JogosPage',
+        components:{
+            CardComponent
+        }
     }
 </script>
