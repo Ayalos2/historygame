@@ -29,6 +29,9 @@
     align-items: center;
     padding: 10px;
     flex-wrap: wrap;
+    margin-top: -10px;
+    margin-left: -5px;
+    margin-right: -5px;
 }
 
 .logo {
