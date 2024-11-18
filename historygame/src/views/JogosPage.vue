@@ -36,63 +36,7 @@
 
 <script>
 import cardComponent from '@/components/cardComponent.vue';
-import { db } from '@/services/firebaseConfig.js';
-import { collection, getDocs } from 'firebase/firestore';
 
-export default {
-  name: 'JogosPage',
-  components: {
-    cardComponent
-  },
-  data() {
-    return {
-      games: [],
-      currentPage: 1,
-      pageSize: 9
-    };
-  },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.games.length / this.pageSize);
-    },
-    paginatedGames() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.games.slice(start, end);
-    }
-  },
-  methods: {
-    async getGames() {
-      try {
-        const snapshot = await getDocs(collection(db, 'games'));
-        this.games = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      }
-    },
-    changePage(page) {
-      if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-      }
-    },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    }
-  },
-  created() {
-    this.getGames();
-  }
-};
 </script>
 
 <style scoped>

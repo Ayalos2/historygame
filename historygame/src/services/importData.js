@@ -1,8 +1,8 @@
 import { importDadosdaAPI } from "./importDadosdaAPI.js";
 
 async function runImport() {
-  await importDadosdaAPI("games","fields id, age_ratings,alternative_names,artwork,category,checksum,collections,cover,first_release_date,franchise,franchises,game_engines,game_modes,genres,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,screenshots,similar_games,slug,status,storyline,summary,themes,updated_at,url,version_parent,version_title,videos,websites;");
-  
+  await importDadosdaAPI("genres","fields id, checksum,created_at,name,slug,updated_at,url;");
+  await importDadosdaAPI("games","fields id, age_ratings,alternative_names,artworks,category,checksum,collections,cover,first_release_date,franchise,franchises,game_engines,game_modes,genres,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,screenshots,similar_games,slug,status,storyline,summary,themes,updated_at,url,version_parent,version_title,videos,websites;");
   await importDadosdaAPI("age_ratings","fields id, category,checksum,content_descriptions,rating,rating_cover_url,synopsis;");
   await importDadosdaAPI("age_rating_content_descriptions","fields id,category,checksum,description;");
 
@@ -13,8 +13,7 @@ async function runImport() {
   await importDadosdaAPI("covers","fields id, alpha_channel,animated,checksum,game,game_localization,height,image_id,url,width;");
 
   await importDadosdaAPI("franchises","fields id,checksum,created_at,games,name,slug,updated_at,url;");
-  
-  await importDadosdaAPI("genres","fields fields id, checksum,created_at,name,slug,updated_at,url;");
+
   await importDadosdaAPI("game_engines","fields id,checksum,companies,created_at,description,logo,name,platforms,slug,updated_at,url;");
   await importDadosdaAPI("game_modes","fields id, checksum,created_at,name,slug,updated_at,url;");
   await importDadosdaAPI("game_videos","fields id,checksum,game,name,video_id;");
@@ -33,6 +32,7 @@ async function runImport() {
   await importDadosdaAPI("themes","fields id, checksum,created_at,name,slug,updated_at,url;");
   
   await importDadosdaAPI("websites","fields id,category,checksum,game,trusted,url;");
+  
   
   console.log('Importação concluída.');
 }
