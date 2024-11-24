@@ -21,7 +21,7 @@ async function pegaTodosDados(url, headers, query, offset = 0, limit = 500) {
             offset += limit;
         }
     }
-    return todosDados.slice(0, 1000);
+    return todosDados.slice(10001, 13000);
 }
 
 export {pegaTodosDados} ;
