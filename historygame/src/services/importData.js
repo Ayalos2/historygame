@@ -10,7 +10,7 @@ async function runImport() {
   // await importDadosdaAPI("artworks","fields id, alpha_channel,animated,checksum,game,height,image_id,url,width;");
 
   // await importDadosdaAPI("companies","fields id, name, slug, url, checksum;");
-  await importDadosdaAPI("covers","fields id, alpha_channel,animated,checksum,game,game_localization,height,image_id,url,width;");
+  // await importDadosdaAPI("covers","fields id, alpha_channel,animated,checksum,game,game_localization,height,image_id,url,width;");
 
   // await importDadosdaAPI("franchises","fields id,checksum,created_at,games,name,slug,updated_at,url;");
 
@@ -24,7 +24,7 @@ async function runImport() {
 
   // await importDadosdaAPI("multiplayer_modes","fields id,campaigncoop,checksum,dropin,game,lancoop,offlinecoop,offlinecoopmax,offlinemax,onlinecoop,onlinecoopmax,onlinemax,platform,splitscreen,splitscreenonline;");
 
-  // await importDadosdaAPI("platforms","fields id, abbreviation,alternative_name,category,checksum,generation,name,platform_family,platform_logo,slug,summary,updated_at,url,versions,websites;");
+  await importDadosdaAPI("platforms","fields id, abbreviation,alternative_name,category,checksum,generation,name,platform_family,platform_logo,slug,summary,updated_at,url,versions,websites;");
   // await importDadosdaAPI("player_perspectives", "fields id,checksum,created_at,name,slug,updated_at,url;");
 
   // await importDadosdaAPI("screenshots","fields id, alpha_channel,animated,checksum,game,height,image_id,url,width;");

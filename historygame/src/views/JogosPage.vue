@@ -2,7 +2,12 @@
   <div>
     <h1 class="text-center">Buscar Todos os Jogos</h1>
     <div class="search-container d-flex justify-content-between align-items-center mb-4">
-      <input type="text" class="form-control search-input" placeholder="Pesquisar...">
+      <input 
+        type="text" 
+        class="form-control search-input" 
+        placeholder="Pesquisar..." 
+        v-model="searchTerm" 
+        @input="getGames(searchTerm)">
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-dark">PC</button>
         <button type="button" class="btn btn-dark">Console</button>
@@ -56,6 +61,7 @@ const daoService = new DAOService();
 const games = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(9);
+const searchTerm = ref('');
 
 const totalPages = computed(() => {
   return Math.ceil(games.value.length / pageSize.value);
@@ -77,9 +83,19 @@ const pagesToShow = computed(() => {
   return pages;
 });
 
-const getGames = async () => {
+const searchGamesByName = async (name) => { 
+  try { 
+    const gamesList = await daoService.getByName(name); 
+    return gamesList; 
+  } catch (error) { 
+    console.error('Erro ao buscar jogos:', error); 
+    return []; 
+  } 
+};
+
+const getGames = async (name = '') => {
   try {
-    games.value = await daoService.getAll();
+    games.value = name ? await searchGamesByName(name) : await daoService.getAll();
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
   }
