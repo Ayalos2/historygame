@@ -10,7 +10,7 @@
             </ul>
         </nav>
         <button class="login"><router-link to="/login">Entrar</router-link></button>
-        <button class="registrar">Registrar</button>
+        <button class="registrar"><router-link to="/registro">Registrar</router-link></button>
     </header>
 </template>
 

@@ -4,6 +4,7 @@ import FavoritosPage from '@/views/FavoritosPage.vue';
 import JogosPage from '@/views/JogosPage.vue';
 import SobrePage from '@/views/SobrePage.vue';
 import TelaLogin from '@/views/TelaLogin.vue';
+import TelaRegistro from '@/views/TelaRegistro.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -11,6 +12,7 @@ const routes = [
   { path: '/favoritos', component: FavoritosPage },
   { path: '/sobre', component: SobrePage},
   { path: '/login', component: TelaLogin},
+  { path: '/registro', component: TelaRegistro},
 
 ];
 
