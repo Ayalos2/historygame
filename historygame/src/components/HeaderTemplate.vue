@@ -9,7 +9,7 @@
             <li><router-link to="/sobre">Sobre</router-link></li>
             </ul>
         </nav>
-        <button class="login">Entrar</button>
+        <button class="login"><router-link to="/login">Entrar</router-link></button>
         <button class="registrar">Registrar</button>
     </header>
 </template>
