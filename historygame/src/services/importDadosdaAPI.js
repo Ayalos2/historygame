@@ -8,19 +8,11 @@ async function importDadosdaAPI(tabela,query) {
     const headers= {
         'Accept': 'application/json',
         'Client-ID': '0ht4yl0a2h5tycn8ighuujkgdmqsyv',
-        'Authorization': 'Bearer tsgpqb1bu4uxlfgfcj2iotj551my80'
+        'Authorization': 'Bearer sutefjhnsxzmluhjjsyorytah2tadq'
       };
     const data = await pegaTodosDados(url, headers, query);
     return data;
-
-  //   const batch = writeBatch(db);
-  //   data.forEach((dado) => {
-  //     const docRef = doc(collection(db, `${tabela}`));
-  //     batch.set(docRef,dado);
-  //   });
-
-  //   await batch.commit();
-  //   console.log(`Dados da tabela ${tabela} importados com sucesso!`);
+    
    } catch (error) {
    console.error('Erro ao importar dados:', error);
   }

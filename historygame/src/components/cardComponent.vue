@@ -37,7 +37,9 @@ const truncatedDescricao = computed(() => {
 });
 
 const fullImageUrl = computed(() => {
-  return props.imageSrc.startsWith('//') ? 'https:' + props.imageSrc : props.imageSrc;
+  
+  let url = props.imageSrc ? (props.imageSrc.startsWith('//') ? 'https:' + props.imageSrc : props.imageSrc) : '../assets/semimagem.png';
+  return url.replace('t_thumb','t_cover_big');
 });
 </script>
 
@@ -48,9 +50,12 @@ const fullImageUrl = computed(() => {
 }
 
 .card-img-top {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+  width: 200px; /* Largura fixa */
+  height: auto; /* Altura automática para manter a proporção */
+  object-fit: cover; /* Ajuste para cobrir todo o container sem distorcer */
+  display: block; /* Exibe a imagem como bloco para permitir a centralização */
+  margin: 0 auto; /* Centraliza horizontalmente */
+  margin-top: 10px;
 }
 
 .card-body {

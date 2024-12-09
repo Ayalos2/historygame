@@ -7,14 +7,14 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms)); 
   } 
 async function throttledImportDadosdaAPI(tabela, query) { 
-  await sleep(260); 
+  await sleep(250); 
   return importDadosdaAPI(tabela, query); 
 }
 
 
 async function runImport() {
 
-  const games = await throttledImportDadosdaAPI("games", "fields id, age_ratings, alternative_names, artworks, category, checksum, collections, cover, first_release_date, franchise, franchises, game_engines, game_modes, genres, involved_companies, keywords, language_supports, multiplayer_modes, name, parent_game, platforms, player_perspectives, screenshots, similar_games, slug, status, storyline, summary, themes, updated_at, url, version_parent, version_title, videos, websites; where id = 279634");   
+  const games = await throttledImportDadosdaAPI("games", "fields id, age_ratings, alternative_names, artworks, category, checksum, collections, cover, first_release_date, franchise, franchises, game_engines, game_modes, genres, involved_companies, keywords, language_supports, multiplayer_modes, name, parent_game, platforms, player_perspectives, screenshots, similar_games, slug, status, storyline, summary, themes, updated_at, url, version_parent, version_title, videos, websites; where id > 279200 & id <= 279010 ");   
    
     let updatedGames = await Promise.all(games.map(async game => {
       const ageRatings = game.age_ratings?.length ? await throttledImportDadosdaAPI("age_ratings", `fields id, rating; where id = (${game.age_ratings.join(',')});`) : [];
@@ -51,7 +51,8 @@ async function runImport() {
             themes: themes.map(theme => theme.name).sort(),
             videos: videos.map(video => video.video_id).sort(),
             websites: websites.map(website => website.url).sort()
-        }; }));
+        };
+      }));
     
 
     const data = updatedGames
