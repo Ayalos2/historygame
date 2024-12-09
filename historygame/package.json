@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "historygame",
   "version": "0.1.0",
   "private": true,
@@ -14,6 +15,7 @@
     "core-js": "^3.8.3",
     "firebase": "^11.0.2",
     "firebase-tools": "^13.27.0",
+    "fs": "^0.0.1-security",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
