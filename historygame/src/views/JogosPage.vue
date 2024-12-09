@@ -8,7 +8,7 @@
         placeholder="Pesquisar..." 
         v-model="searchTerm" 
         @input="getGames(searchTerm)">
-      <div class="btn-group" role="group">
+      <div v-if="false" class="btn-group" role="group">
         <button type="button" class="btn btn-dark">PC</button>
         <button type="button" class="btn btn-dark">Console</button>
         <button type="button" class="btn btn-dark">Web</button>

@@ -23,18 +23,14 @@ class DAOService {
   }
   async getByName(name) {
     try {
-      const gamesRef = collection(db, 'games');
-      const coversRef = collection(db, 'covers');
+      const gamesRef = collection(db, 'games2');
+     
   
       const q = query(gamesRef, where('name', '>=', name), where('name', '<=', name + '\uf8ff'));
   
       const gamesSnapshot = await getDocs(q);
-      const coversSnapshot = await getDocs(coversRef);
   
-      const coversMap = new Map();
-      coversSnapshot.forEach(doc => {
-        coversMap.set(doc.id, doc.data().url);
-      });
+     
   
       const documents = gamesSnapshot.docs.map(doc => {
         const data = doc.data();
@@ -42,7 +38,7 @@ class DAOService {
           id: doc.id,
           name: data.name,
           summary: data.summary,
-          coverUrl: coversMap.get(data.cover)
+          coverUrl: data.cover
         };
       });
       return documents;
