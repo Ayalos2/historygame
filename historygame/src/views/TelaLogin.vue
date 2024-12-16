@@ -1,26 +1,48 @@
 <template>
-    <div class="login-container">
-      <h1>Login</h1>
-      <form @submit.prevent="handleLogin">
-        <label for="username">Usuário</label>
-        <input type="text" id="username" v-model="username" required>
-        
-        <label for="password">Senha</label>
-        <input type="password" id="password" v-model="password" required>
-        
-        <button type="submit">Entrar</button>
-      </form>
-      <a href="#" class="forgot-password">Esqueceu a senha?</a>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-        name: 'TelaLogin'
-    }
+  <div class="login-container">
+    <h1>Login</h1>
+    <form @submit.prevent="handleLogin">
+      <label for="username">Usuário</label>
+      <input type="text" id="username" v-model="email" required>
+      
+      <label for="password">Senha</label>
+      <input type="password" id="password" v-model="password" required>
+      
+      <button type="submit">Entrar</button>
+    </form>
+    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+  </div>
+</template>
 
-  </script>
-  
+<script>
+import { ref } from "vue";
+import { auth } from "../services/firebaseConfig";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
+export default {
+  setup() {
+    const email = ref('');
+    const password = ref('');
+
+    const handleLogin = async () => {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
+        console.log(userCredential.user);
+      } catch (error) {
+        console.log(error.code);
+        alert(error.message);
+      }
+    };
+
+    return {
+      email,
+      password,
+      handleLogin
+    };
+  }
+};
+</script>
+
   <style scoped>
   
   .login-container {

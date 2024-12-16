@@ -1,44 +1,55 @@
 <template>
-    <div class="register-container">
-      <h1>Registrar</h1>
-      <form @submit.prevent="handleRegister">
-        <label for="username">Usuário</label>
-        <input type="text" id="username" v-model="username" required>
-        
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="email" required>
-        
-        <label for="password">Senha</label>
-        <input type="password" id="password" v-model="password" required>
-        
-        <label for="confirm-password">Confirmar Senha</label>
-        <input type="password" id="confirm-password" v-model="confirmPassword" required>
-        
-        <button  type="submit">Registrar</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-import { ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+  <div class="register-container">
+    <h1>Registrar</h1>
+    <form>
+      <label for="username">Usuário</label>
+      <input type="text" id="username" v-model="username" required>
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" v-model="email" required>
+      
+      <label for="password">Senha</label>
+      <input type="password" id="password" v-model="password" required>
+      
+      <label for="confirm-password">Confirmar Senha</label>
+      <input type="password" id="confirm-password" v-model="confirmPassword" required>
+      
+      <button @click="Register" type="button">Registrar</button>
+    </form>
+  </div>
+</template>
 
-const email = ref('');
-const password = ref('');
-const handleRegister = () => {
-    const auth = getAuth()
-    createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((data) => {
-        console.log("Registrado com sucesso");
-    })
-    .catch((error) => {
+<script>
+import { ref } from "vue";
+import { auth } from "../services/firebaseConfig";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+export default {
+  setup() {
+    const username = ref('');
+    const email = ref('');
+    const password = ref('');
+    const confirmPassword = ref('');
+
+    const Register = async () => {
+      try {
+        await createUserWithEmailAndPassword(auth, email.value, password.value);
+      } catch (error) {
         console.log(error.code);
         alert(error.message);
-    });
+      }
+    };
 
-}
-
-  </script>
+    return {
+      username,
+      email,
+      password,
+      confirmPassword,
+      Register
+    };
+  }
+};
+</script>
   
   <style scoped>
   
