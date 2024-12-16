@@ -14,13 +14,29 @@
         <label for="confirm-password">Confirmar Senha</label>
         <input type="password" id="confirm-password" v-model="confirmPassword" required>
         
-        <button @click="register" type="submit">Registrar</button>
+        <button  type="submit">Registrar</button>
       </form>
     </div>
   </template>
   
   <script>
+import { ref } from "vue";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
+const email = ref('');
+const password = ref('');
+const handleRegister = () => {
+    const auth = getAuth()
+    createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then((data) => {
+        console.log("Registrado com sucesso");
+    })
+    .catch((error) => {
+        console.log(error.code);
+        alert(error.message);
+    });
+
+}
 
   </script>
   

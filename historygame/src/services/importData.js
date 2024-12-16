@@ -14,7 +14,7 @@ async function throttledImportDadosdaAPI(tabela, query) {
 
 async function runImport() {
 
-  const games = await throttledImportDadosdaAPI("games", "fields id, age_ratings, alternative_names, artworks, category, checksum, collections, cover, first_release_date, franchise, franchises, game_engines, game_modes, genres, involved_companies, keywords, language_supports, multiplayer_modes, name, parent_game, platforms, player_perspectives, screenshots, similar_games, slug, status, storyline, summary, themes, updated_at, url, version_parent, version_title, videos, websites; where id > 279200 & id <= 279010 ");   
+  const games = await throttledImportDadosdaAPI("games", "fields id, age_ratings, alternative_names, artworks, category, checksum, collections, cover, first_release_date, franchise, franchises, game_engines, game_modes, genres, involved_companies, keywords, language_supports, multiplayer_modes, name, parent_game, platforms, player_perspectives, screenshots, similar_games, slug, status, storyline, summary, themes, updated_at, url, version_parent, version_title, videos, websites; where id > 279300 & id <= 279350 ");   
    
     let updatedGames = await Promise.all(games.map(async game => {
       const ageRatings = game.age_ratings?.length ? await throttledImportDadosdaAPI("age_ratings", `fields id, rating; where id = (${game.age_ratings.join(',')});`) : [];
