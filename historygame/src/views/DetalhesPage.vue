@@ -52,8 +52,8 @@
       <table class="info-table">
         <thead>
           <tr>
-            <th>Desenvolvedora</th>
-            <th>Editora</th>
+            <th>Plataforma</th>
+            <th>Nomes alternativos</th>
             <th>Gêneros</th>
             <th>Modo de jogo</th>
             <th>Perspectiva do jogador</th>
@@ -62,18 +62,18 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ game.developer }}</td>
-            <td>{{ game.publisher }}</td>
-            <td>{{ game.genres }}</td>
-            <td>{{ game.gameModes }}</td>
-            <td>{{ game.perspective }}</td>
-            <td>{{ game.themes }}</td>
+            <td><span v-for="platforms in game.platforms" :key="platforms">{{ platforms }} <br/></span></td>
+            <td><span v-for="alternative_names in game.alternative_names" :key="alternative_names">{{ alternative_names }} <br/></span></td>
+            <td><span v-for="genres in game.genres" :key="genres">{{ genres }} <br/></span></td>
+            <td><span v-for="game_modes in game.game_modes" :key="game_modes">{{ game_modes }} <br/></span></td>
+            <td><span v-for="player_perspectives in game.player_perspectives" :key="player_perspectives">{{ player_perspectives }} <br/></span></td>
+            <td><span v-for="theme in game.themes" :key="theme">{{ theme }}</span></td>
           </tr>
         </tbody>
       </table>
       <div class="history-section">
         <h2>História</h2>
-        <p>{{ game.story }}</p>
+        <p>{{ game.storyline }}</p>
       </div>
     </div>
 
