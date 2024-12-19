@@ -10,6 +10,7 @@
       
       <button type="submit">Entrar</button>
     </form>
+    <button @click="loginWithGoogle">Entrar com Google</button>
     <a href="#" class="forgot-password">Esqueceu a senha?</a>
   </div>
 </template>
@@ -17,8 +18,8 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
-import { auth } from "../services/firebaseConfig";
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, googleProvider } from "../services/firebaseConfig";
+import { signInWithEmailAndPassword,signInWithPopup } from 'firebase/auth';
 
 export default {
   setup() {
@@ -45,10 +46,24 @@ export default {
       }
     };
 
+    const loginWithGoogle = async () => {
+      try{
+        const result = await signInWithPopup(auth, googleProvider); 
+        console.log(result.user); 
+        router.push('/jogos');
+      }
+      catch (error) {
+        console.log(error.code);
+        alert(error.message);
+      }
+    };
+
+
     return {
       email,
       password,
-      handleLogin
+      handleLogin,
+      loginWithGoogle
     };
   }
 };
