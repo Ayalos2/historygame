@@ -6,6 +6,7 @@ import SobrePage from '@/views/SobrePage.vue';
 import TelaLogin from '@/views/TelaLogin.vue';
 import TelaRegistro from '@/views/TelaRegistro.vue';
 import ForgotPassword from '@/views/ForgotPassword.vue';
+import DetalhesPage from '@/views/DetalhesPage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -14,7 +15,8 @@ const routes = [
   { path: '/sobre', component: SobrePage},
   { path: '/login', component: TelaLogin},
   { path: '/registro', component: TelaRegistro},
-  {path: '/recuperarsenha', component: ForgotPassword}
+  {path: '/recuperarsenha', component: ForgotPassword},
+  {path:'/jogo/:id', name:"DetalheJogos" ,component: DetalhesPage}
 
 
 ];

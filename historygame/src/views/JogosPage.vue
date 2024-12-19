@@ -22,6 +22,7 @@
         :titulo="game.name"
         :descricao="game.summary"
         :image-src="game.coverUrl"
+        @click="detalharJogos(game.id)"
       />
     </div>
     <nav aria-label="Page navigation">
@@ -56,12 +57,16 @@
 import { ref, computed, onMounted } from 'vue';
 import cardComponent from '@/components/cardComponent.vue';
 import DAOService from '@/services/DAOService';
+import { useRouter } from 'vue-router';
+
 
 const daoService = new DAOService();
 const games = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(9);
 const searchTerm = ref('');
+const router = useRouter();
+
 
 const totalPages = computed(() => {
   return Math.ceil(games.value.length / pageSize.value);
@@ -118,6 +123,10 @@ const nextPage = () => {
     currentPage.value++;
   }
 };
+
+const detalharJogos = (gameId) => {
+  router.push({name:"DetalheJogos", params: {id:gameId}})
+}
 
 onMounted(() => {
   getGames();

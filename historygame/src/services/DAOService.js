@@ -1,4 +1,4 @@
-import { getDocs, collection, query,where } from 'firebase/firestore';
+import { getDocs, collection, query,where, getDoc, doc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 class DAOService {
@@ -46,6 +46,19 @@ class DAOService {
       console.error('Error getting documents: ', error);
       throw new Error('Error getting documents');
     }
-  }  
+  }
+  async getById(id) { 
+    try { const gameDoc = await getDoc(doc(db, 'games2', id)); 
+      if (gameDoc.exists()) { 
+        return { id: gameDoc.id, ...gameDoc.data() };
+       } else { 
+        throw new Error('Game not found'); 
+      } } catch (error) { 
+        console.error('Error getting game:', error); 
+        throw new Error('Error getting game'); 
+      } 
+    }
+
+
 }
 export default DAOService;

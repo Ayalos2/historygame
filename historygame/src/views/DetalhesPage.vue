@@ -1,150 +1,139 @@
 <template>
-    <div>
-      <!-- Seção Principal -->
-      <div class="container">
-        <div class="image-section">
-          <img src="../assets/e940c07107a4cefbbedbbd53451e26f0dbf292dcfab6c307.avif" alt="DBZ SPZ" />
-        </div>
-  
-        <!-- Seção de Detalhes -->
-        <div class="text-section">
-          <h1>Dragon Ball Sparking! Zero</h1>
-          <p><b>Descrição</b></p>
-          <p>
-            Dragon Ball: Sparking! Zero, é o quarto jogo da série Budokai Tenkaichi.
-            O jogo está disponível no PlayStation 5, Xbox Series X/S, Microsoft Windows.
-          </p>
-  
-          <!-- Box de Avaliação -->
-          <div class="rating-box">
-            <button class="review-button">Avalie o jogo</button>
-          </div>
-  
-          <!-- 5 Estrelas de Avaliação e Ícones ao lado -->
-          <div class="rating-stars">
-            <span class="star">⭐</span>
-            <span class="star">⭐</span>
-            <span class="star">⭐</span>
-            <span class="star">⭐</span>
-            <span class="star">⭐</span>
-            
-            <!-- Ícones de Avaliação ao lado das Estrelas -->
-            <div class="stats">
-              <div class="stat">
-                <span class="icon">❤️</span>
-                <p>5000</p>
-              </div>
-              <div class="stat">
-                <span class="icon">🎮</span>
-                <p>2000</p>
-              </div>
-              <div class="stat">
-                <span class="icon">⏳</span>
-                <p>1000</p>
-              </div>
-            </div>
-          </div>
-  
-        </div>
+  <div>
+    <!-- Seção Principal -->
+    <div class="container">
+      <div class="image-section">
+        <img :src="fullImageUrl" :alt="game.name" />
       </div>
-  
-      <!-- Seção Sobre -->
-      <div class="about-section">
-        <div class="header">
-          <h1>SOBRE</h1>
+
+      <!-- Seção de Detalhes -->
+      <div class="text-section">
+        <h1>{{ game.name }}</h1>
+        <p><b>Descrição</b></p>
+        <p>{{ game.summary }}</p>
+
+        <!-- Box de Avaliação -->
+        <div class="rating-box">
+          <button class="review-button">Avalie o jogo</button>
         </div>
-        <table class="info-table">
-          <thead>
-            <tr>
-              <th>Desenvolvedora</th>
-              <th>Editora</th>
-              <th>Gêneros</th>
-              <th>Modo de jogo</th>
-              <th>Perspectiva do jogador</th>
-              <th>Temas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Spike Chunsoft, Inc.</td>
-              <td>Bandai</td>
-              <td>Combate</td>
-              <td>Jogador único,
-                <br> Multijogador,
-                <br>Tela dividida</td>
-              <td>Terceira pessoa</td>
-              <td>Ação</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="history-section">
-          <h2>História</h2>
-          <p>
-            O modo central de Dragon Ball: Sparking Zero será a experiência single-player.
-             Nela, jogadores poderão explorar a jornada sob ponto de vista de oito personagens:
-             Goku, Vegeta, Freeza, Gohan, Piccolo, Trunks do Futuro, Jiren e Goku Black.
-          </p>
-        </div>
-      </div>
-  
-      <!-- Seção de Avaliações de Usuários Fictícios -->
-      <div class="about-section">
-        <div class="header">
-          <h1>Avaliações de Usuários</h1>
-        </div>
-        <div class="reviews-container">
-          <div class="review-card">
-            <img src="https://files.tecnoblog.net/wp-content/uploads/2019/02/thispersondoesnotexist.jpg" alt="User 1" class="profile-img" />
-            <div class="review-content">
-              <h3>Lucas Oliveira</h3>
-              <div class="stars">
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-              </div>
-              <p>Ótimo jogo! A jogabilidade está impecável e a história é muito envolvente. Recomendo a todos!</p>
+
+        <!-- 5 Estrelas de Avaliação e Ícones ao lado -->
+        <div class="rating-stars">
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+
+          <!-- Ícones de Avaliação ao lado das Estrelas -->
+          <div class="stats">
+            <div class="stat">
+              <span class="icon">❤️</span>
+              <p>{{ game.likes }}</p>
             </div>
-          </div>
-          <div class="review-card">
-            <img src="https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/07/IMG_4034.jpg?w=495" alt="User 2" class="profile-img" />
-            <div class="review-content">
-              <h3>Amanda Silva</h3>
-              <div class="stars">
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-              </div>
-              <p>Eu amei o jogo! A mecânica de combate é viciante e os gráficos estão incríveis!</p>
+            <div class="stat">
+              <span class="icon">🎮</span>
+              <p>{{ game.plays }}</p>
             </div>
-          </div>
-          <div class="review-card">
-            <img src="https://xsgames.co/randomusers/assets/avatars/male/46.jpg" alt="User 3" class="profile-img" />
-            <div class="review-content">
-              <h3>Felipe Santos</h3>
-              <div class="stars">
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-                <span class="star">⭐</span>
-              </div>
-              <p>Um dos melhores jogos da série! A evolução no modo multiplayer foi excelente.</p>
+            <div class="stat">
+              <span class="icon">⏳</span>
+              <p>{{ game.waits }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "FavoritosPage",
-  };
-  </script>
+
+    <!-- Seção Sobre -->
+    <div class="about-section">
+      <div class="header">
+        <h1>SOBRE</h1>
+      </div>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Desenvolvedora</th>
+            <th>Editora</th>
+            <th>Gêneros</th>
+            <th>Modo de jogo</th>
+            <th>Perspectiva do jogador</th>
+            <th>Temas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ game.developer }}</td>
+            <td>{{ game.publisher }}</td>
+            <td>{{ game.genres }}</td>
+            <td>{{ game.gameModes }}</td>
+            <td>{{ game.perspective }}</td>
+            <td>{{ game.themes }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="history-section">
+        <h2>História</h2>
+        <p>{{ game.story }}</p>
+      </div>
+    </div>
+
+    <!-- Seção de Avaliações de Usuários -->
+    <div class="about-section">
+      <div class="header">
+        <h1>Avaliações de Usuários</h1>
+      </div>
+      <div class="reviews-container">
+        <div class="review-card" v-for="review in game.reviews" :key="review.id">
+          <img :src="review.profileImg" :alt="review.username" class="profile-img" />
+          <div class="review-content">
+            <h3>{{ review.username }}</h3>
+            <div class="stars">
+              <span class="star" v-for="n in review.stars" :key="n">⭐</span>
+            </div>
+            <p>{{ review.comment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import DAOService from '@/services/DAOService'; // Ajuste o caminho conforme necessário
+
+const daoService = new DAOService();
+
+export default {
+  name: 'DetalhesPage',
+  setup() {
+    const game = ref({});
+    const route = useRoute();
+    const gameId = computed(() => route.params.id);
+
+    const fullImageUrl = computed(() => {
+      let url = game.value.cover ? (game.value.cover.startsWith('//') ? 'https:' + game.value.cover : game.value.cover) : '../assets/semimagem.png';
+      console.log(url);
+      return url.replace('t_thumb', 't_cover_big');
+    });
+
+    const getGameDetails = async (id) => {
+      try {
+        game.value = await daoService.getById(id);
+      } catch (error) {
+        console.error('Erro ao buscar detalhes do jogo:', error);
+      }
+    };
+
+    onMounted(() => {
+      getGameDetails(gameId.value);
+    });
+
+    return { game, fullImageUrl };
+  }
+};
+</script>
   
   <style scoped>
   .container {
