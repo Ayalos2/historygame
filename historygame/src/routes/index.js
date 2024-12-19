@@ -14,6 +14,7 @@ const routes = [
   { path: '/login', component: TelaLogin},
   { path: '/registro', component: TelaRegistro},
 
+
 ];
 
 const router = createRouter({
