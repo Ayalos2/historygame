@@ -8,7 +8,7 @@
         placeholder="Pesquisar..." 
         v-model="searchTerm" 
         @input="getGames(searchTerm)">
-      <div v-if="false" class="btn-group" role="group">
+      <div class="btn-group" role="group">
         <button type="button" class="btn btn-dark">PC</button>
         <button type="button" class="btn btn-dark">Console</button>
         <button type="button" class="btn btn-dark">Web</button>
@@ -17,7 +17,7 @@
     </div>
     <div class="card-grid">
       <cardComponent
-        v-for="(game, index) in paginatedGames"
+        v-for="(game, index) in paginatedGames" 
         :key="index"
         :titulo="game.name"
         :descricao="game.summary"
