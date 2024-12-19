@@ -26,7 +26,7 @@
     <span style="display: none;">Sign in with Google</span>
   </div>
 </button>
-    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+    <a class="forgot-password"><router-link to="/recuperarsenha">Esqueceu a senha?</router-link></a>
   </div>
 </template>
 
