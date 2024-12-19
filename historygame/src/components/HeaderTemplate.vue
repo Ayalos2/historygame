@@ -12,19 +12,21 @@
       <button v-show="!autenticado" class="login"><router-link to="/login">Entrar</router-link></button>
       <button v-show="!autenticado" class="registrar"><router-link to="/registro">Registrar</router-link></button>
       <button v-show="autenticado" class="user"><img src="../assets/do-utilizador.png" alt="UserPic" class="userPic"></button>
-      <button v-show="autenticado" class="registrar">Sair</button>
+      <button v-show="autenticado" @click="handleLogout" class="logout">Sair</button>
 
     </header>
   </template>
   
   <script>
   import { auth } from '@/services/firebaseConfig';
-  import { onAuthStateChanged } from 'firebase/auth';
+  import { useRouter } from 'vue-router';
+  import { onAuthStateChanged, signOut } from 'firebase/auth';
   import { ref } from 'vue';
   
   export default {
     name: 'HeaderTemplate',
     setup() {
+      const router = useRouter(); 
       const autenticado = ref(false);
   
       onAuthStateChanged(auth, (user) => {
@@ -34,9 +36,24 @@
           autenticado.value = false;
         }
       });
+
+      const handleLogout = async () => {
+        try {
+          await signOut(auth);
+          console.log("Usuario deslogado com sucesso");
+          router.push("/");
+
+
+        }
+        catch (error){
+            console.log(error.code);
+            alert(error.message);
+        }
+      }
   
       return {
-        autenticado
+        autenticado,
+        handleLogout
       };
     }
   };
@@ -114,7 +131,19 @@ button.registrar {
     cursor: pointer;
     border-radius: 10px;
 }
-button.login:hover, button.registrar:hover button.logo:hover{
+
+button.logout {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    margin-right: 150px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+
+button.login:hover, button.registrar:hover, button.user:hover, button.logout:hover {
     opacity: 0.7;
 }
 
