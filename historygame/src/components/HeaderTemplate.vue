@@ -9,8 +9,8 @@
           <li><router-link to="/sobre">Sobre</router-link></li>
         </ul>
       </nav>
-      <button v-show="!autenticado" class="login"><router-link to="/login">Entrar</router-link></button>
-      <button v-show="!autenticado" class="registrar"><router-link to="/registro">Registrar</router-link></button>
+      <button @click="entrar" v-show="!autenticado" class="login">Entrar</button>
+      <button @click="registrar" v-show="!autenticado" class="registrar">Registrar</button>
       <button v-show="autenticado" class="user"><img src="../assets/do-utilizador.png" alt="UserPic" class="userPic"></button>
       <button v-show="autenticado" @click="handleLogout" class="logout">Sair</button>
 
@@ -28,7 +28,15 @@
     setup() {
       const router = useRouter(); 
       const autenticado = ref(false);
-  
+      
+      const entrar = ()=> {
+        router.push("/login");
+      };
+
+      const registrar = () => {
+        router.push("/registro");
+      };
+
       onAuthStateChanged(auth, (user) => {
         if (user) {
           autenticado.value = true;
@@ -53,7 +61,9 @@
   
       return {
         autenticado,
-        handleLogout
+        handleLogout,
+        entrar,
+        registrar
       };
     }
   };
