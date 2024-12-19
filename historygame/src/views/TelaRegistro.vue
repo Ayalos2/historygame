@@ -14,7 +14,7 @@
       <label for="confirm-password">Confirmar Senha</label>
       <input type="password" id="confirm-password" v-model="confirmPassword" required>
       
-      <button @click="Register" type="button">Registrar</button>
+      <button @click="validateAndRegister" type="button">Registrar</button>
     </form>
     <button @click="registerWithGoogle" class="gsi-material-button">
   <div class="gsi-material-button-state"></div>
@@ -39,7 +39,7 @@
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
 import { auth, googleProvider } from "../services/firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup,sendEmailVerification } from 'firebase/auth';
 
 export default {
   setup() {
@@ -49,10 +49,41 @@ export default {
     const confirmPassword = ref('');
     const router = useRouter(); 
 
+    const isEmailValid = (email) => { 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+      return emailRegex.test(email); 
+    };
 
-    const Register = async () => {
+    const isPasswordValid = (password) => { 
+      return password.length >= 6;   
+    };
+
+    const validateAndRegister = async () => {
+      if (!isEmailValid(email.value)) {
+        alert('Por favor, insira um e-mail válido.');
+        return;
+      }
+
+      if (!isPasswordValid(password.value)) {
+        alert('A senha deve ter pelo menos 6 caracteres.');
+        return;
+      }
+
+      if (password.value !== confirmPassword.value) {
+        alert('As senhas não correspondem.');
+        return;
+      }
+
       try {
-        await createUserWithEmailAndPassword(auth, email.value, password.value);
+        const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value);
+        const user = userCredential.user;
+        if (user) {
+          await sendEmailVerification(user);
+          console.log("Email sent successfully.");
+          alert("Email enviado com sucesso");
+        }
+
+        router.push('/jogos');
       } catch (error) {
         console.log(error.code);
         alert(error.message);
@@ -75,7 +106,7 @@ export default {
       email,
       password,
       confirmPassword,
-      Register,
+      validateAndRegister,
       registerWithGoogle
     };
   }
