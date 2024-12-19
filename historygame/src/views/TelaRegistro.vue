@@ -16,13 +16,15 @@
       
       <button @click="Register" type="button">Registrar</button>
     </form>
+    <button @click="registerWithGoogle">Entrar com Google</button>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
-import { auth } from "../services/firebaseConfig";
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'vue-router';
+import { auth, googleProvider } from "../services/firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 export default {
   setup() {
@@ -30,6 +32,8 @@ export default {
     const email = ref('');
     const password = ref('');
     const confirmPassword = ref('');
+    const router = useRouter(); 
+
 
     const Register = async () => {
       try {
@@ -40,12 +44,24 @@ export default {
       }
     };
 
+    const registerWithGoogle = async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        console.log(result.user);
+        router.push('/jogos');
+      }catch(error) {
+        console.log(error.code);
+        alert(error.message);
+      }
+    }
+
     return {
       username,
       email,
       password,
       confirmPassword,
-      Register
+      Register,
+      registerWithGoogle
     };
   }
 };
