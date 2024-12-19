@@ -16,6 +16,7 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from 'vue-router';
 import { auth } from "../services/firebaseConfig";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -23,11 +24,21 @@ export default {
   setup() {
     const email = ref('');
     const password = ref('');
+    const router = useRouter(); 
 
     const handleLogin = async () => {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
-        console.log(userCredential.user);
+
+        const user = userCredential.user;
+        console.log(user);
+        alert('Login realizado');
+
+        email.value='';
+        password.value='';
+
+        router.push("/jogos");
+
       } catch (error) {
         console.log(error.code);
         alert(error.message);

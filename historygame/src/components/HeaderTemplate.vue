@@ -1,24 +1,46 @@
 <template>
     <header class="cabeca">
-        <img src="../assets/logo.png" alt="Logo" class="logo">
-        <nav>
-            <ul>
-            <li><router-link to="/">Inicial</router-link></li>
-            <li><router-link to="/jogos">Jogos</router-link></li>
-            <li><router-link to="/favoritos">Favoritos</router-link></li>
-            <li><router-link to="/sobre">Sobre</router-link></li>
-            </ul>
-        </nav>
-        <button class="login"><router-link to="/login">Entrar</router-link></button>
-        <button class="registrar"><router-link to="/registro">Registrar</router-link></button>
-    </header>
-</template>
+      <img src="../assets/logo.png" alt="Logo" class="logo">
+      <nav>
+        <ul>
+          <li><router-link to="/">Inicial</router-link></li>
+          <li><router-link to="/jogos">Jogos</router-link></li>
+          <li><router-link to="/favoritos">Favoritos</router-link></li>
+          <li><router-link to="/sobre">Sobre</router-link></li>
+        </ul>
+      </nav>
+      <button v-show="!autenticado" class="login"><router-link to="/login">Entrar</router-link></button>
+      <button v-show="!autenticado" class="registrar"><router-link to="/registro">Registrar</router-link></button>
+      <button v-show="autenticado" class="user"><img src="../assets/do-utilizador.png" alt="UserPic" class="userPic"></button>
+      <button v-show="autenticado" class="registrar">Sair</button>
 
-<script>
-    export default {
-        name: 'HeaderTemplate'
+    </header>
+  </template>
+  
+  <script>
+  import { auth } from '@/services/firebaseConfig';
+  import { onAuthStateChanged } from 'firebase/auth';
+  import { ref } from 'vue';
+  
+  export default {
+    name: 'HeaderTemplate',
+    setup() {
+      const autenticado = ref(false);
+  
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          autenticado.value = true;
+        } else {
+          autenticado.value = false;
+        }
+      });
+  
+      return {
+        autenticado
+      };
     }
-</script>
+  };
+  </script>
 
 
 <style scoped>
@@ -37,6 +59,10 @@
 .logo {
     width: 80px;
     margin-left: 150px;
+}
+
+.userPic {
+    width: 40px;
 }
 
 nav {
@@ -70,6 +96,14 @@ button.login {
     cursor: pointer;
     border-radius: 10px;
 }
+button.user {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    padding: 0px;
+    cursor: pointer;
+    border-radius: 50px;
+}
 
 button.registrar {
     background-color: black;
@@ -80,7 +114,7 @@ button.registrar {
     cursor: pointer;
     border-radius: 10px;
 }
-button.login:hover, button.registrar:hover{
+button.login:hover, button.registrar:hover button.logo:hover{
     opacity: 0.7;
 }
 
