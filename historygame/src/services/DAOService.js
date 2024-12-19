@@ -12,7 +12,8 @@ class DAOService {
           id: doc.id,
           name: data.name,
           summary: data.summary,
-          coverUrl: data.cover
+          coverUrl: data.cover,
+          slug: data.slug
         };
       });
       return documents;
@@ -38,7 +39,9 @@ class DAOService {
           id: doc.id,
           name: data.name,
           summary: data.summary,
-          coverUrl: data.cover
+          coverUrl: data.cover,
+          slug: data.slug
+
         };
       });
       return documents;

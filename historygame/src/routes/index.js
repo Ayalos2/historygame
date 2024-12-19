@@ -16,7 +16,7 @@ const routes = [
   { path: '/login', component: TelaLogin},
   { path: '/registro', component: TelaRegistro},
   {path: '/recuperarsenha', component: ForgotPassword},
-  {path:'/jogo/:id', name:"DetalheJogos" ,component: DetalhesPage}
+  {path:'/jogo/:slug/:id', name:"DetalheJogos" ,component: DetalhesPage}
 
 
 ];

@@ -22,7 +22,7 @@
         :titulo="game.name"
         :descricao="game.summary"
         :image-src="game.coverUrl"
-        @click="detalharJogos(game.id)"
+        @click="detalharJogos(game.slug,game.id)"
       />
     </div>
     <nav aria-label="Page navigation">
@@ -124,8 +124,8 @@ const nextPage = () => {
   }
 };
 
-const detalharJogos = (gameId) => {
-  router.push({name:"DetalheJogos", params: {id:gameId}})
+const detalharJogos = (slug,id) => {
+  router.push({name:"DetalheJogos", params: {slug,id}})
 }
 
 onMounted(() => {
