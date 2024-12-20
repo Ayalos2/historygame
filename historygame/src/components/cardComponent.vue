@@ -36,11 +36,11 @@ const truncatedDescricao = computed(() => {
     : props.descricao;
 });
 
-const fullImageUrl = computed(() => {
-  
-  let url = props.imageSrc ? (props.imageSrc.startsWith('//') ? 'https:' + props.imageSrc : props.imageSrc) : '../assets/semimagem.png';
-  return url.replace('t_thumb','t_cover_big');
+const fullImageUrl = computed(() => {  
+  let url = props.imageSrc && props.imageSrc.trim() !== '' ? 'https:' + props.imageSrc : require('../assets/jogosSemImagem.jpg');
+  return url.replace('t_thumb', 't_cover_big');
 });
+
 </script>
 
 <style scoped>
