@@ -83,7 +83,7 @@ export default {
           alert("Email enviado com sucesso");
         }
 
-        router.push('/jogos');
+        router.push('/perfil');
       } catch (error) {
         console.log(error.code);
         alert(error.message);
@@ -94,7 +94,7 @@ export default {
       try {
         const result = await signInWithPopup(auth, googleProvider);
         console.log(result.user);
-        router.push('/jogos');
+        router.push('/perfil');
       }catch(error) {
         console.log(error.code);
         alert(error.message);

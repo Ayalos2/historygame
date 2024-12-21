@@ -62,6 +62,5 @@ class DAOService {
       } 
     }
 
-
 }
 export default DAOService;

@@ -11,7 +11,9 @@
       </nav>
       <button @click="entrar" v-show="!autenticado" class="login">Entrar</button>
       <button @click="registrar" v-show="!autenticado" class="registrar">Registrar</button>
-      <button v-show="autenticado" class="user"><img src="../assets/do-utilizador.png" alt="UserPic" class="userPic"></button>
+      <button v-show="autenticado" class="user" @click="perfil">
+        <img src="../assets/do-utilizador.png" alt="UserPic" class="userPic">
+      </button>
       <button v-show="autenticado" @click="handleLogout" class="logout">Sair</button>
 
     </header>
@@ -35,6 +37,10 @@
 
       const registrar = () => {
         router.push("/registro");
+      };
+
+      const perfil = () => {
+        router.push("/perfil");
       };
 
       onAuthStateChanged(auth, (user) => {
@@ -63,7 +69,8 @@
         autenticado,
         handleLogout,
         entrar,
-        registrar
+        registrar,
+        perfil
       };
     }
   };
