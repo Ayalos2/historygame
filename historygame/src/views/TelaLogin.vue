@@ -44,7 +44,7 @@ export default {
 
     const handleLogin = async () => {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
+        await signInWithEmailAndPassword(auth, email.value, password.value);
 
         email.value='';
         password.value='';
@@ -60,6 +60,7 @@ export default {
     const loginWithGoogle = async () => {
       try{
         const result = await signInWithPopup(auth, googleProvider); 
+        console.log(result.user); 
         router.push('/jogos');
       }
       catch (error) {
