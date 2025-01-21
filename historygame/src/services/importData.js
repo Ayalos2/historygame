@@ -1,5 +1,4 @@
 import { importDadosdaAPI } from "./importDadosdaAPI.js";
-import fs from 'fs';
 import { db } from './firebaseConfig.js';
 import { collection, doc, setDoc, writeBatch } from 'firebase/firestore';
 

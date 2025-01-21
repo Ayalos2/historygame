@@ -1,7 +1,6 @@
 <template>
     <div class="profile-container">
         <div class="profile-header">
-            <!-- Verifique se a foto está disponível, caso contrário, use um avatar padrão -->
             <img :src="user?.photoURL || defaultAvatar" alt="User Profile Picture" class="profile-picture" />
             <input type="text" v-model="username" @input="checkChanges" class="edit-input username" />
             <textarea v-model="bio" @input="checkChanges" class="edit-input bio"></textarea>

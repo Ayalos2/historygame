@@ -1,4 +1,4 @@
-import { getDocs, collection, query,where, getDoc, doc } from 'firebase/firestore';
+import { getDocs, collection, query,where, setDoc, getDoc, doc, arrayUnion, updateDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 class DAOService {
@@ -61,6 +61,26 @@ class DAOService {
         throw new Error('Error getting game'); 
       } 
     }
+  async setFavoritos(user,game) {
+    const userDocRef = doc(db, "userFavoritos", user);
+    try {
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        await updateDoc(userDocRef, {
+          gameIds: arrayUnion(game)
+        });
+        console.log("ID do jogo salvo com sucesso na lista!");
+      } else {
+        await setDoc(userDocRef, {
+          gameIds: [game]
+        });
+        console.log("Documento criado e ID do jogo salvo com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao salvar ID do jogo na lista: ", error);
+    }
+  }
 
 }
 export default DAOService;

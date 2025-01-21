@@ -28,7 +28,7 @@
           <!-- Ícones de Avaliação ao lado das Estrelas -->
           <div class="stats">
             <div class="stat">
-              <span class="icon">❤️</span>
+              <span @click="favoritar" class="icon">❤️</span>
               <p>{{ game.likes }}</p>
             </div>
             <div class="stat">
@@ -102,6 +102,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import DAOService from '@/services/DAOService'; // Ajuste o caminho conforme necessário
+import { getAuth } from "firebase/auth";
+
 
 const daoService = new DAOService();
 
@@ -126,11 +128,34 @@ export default {
       }
     };
 
+    function pegarIdUsuario() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        const userId = user.uid;
+        console.log("ID do usuário: ", userId);
+        return userId;
+      } else {
+        console.log("Nenhum usuário está logado.");
+        return null;
+      }
+    }
+
+
+    const favoritar = () => {
+      const user=pegarIdUsuario();
+
+      daoService.setFavoritos(user,gameId.value);
+      alert('FEITO');
+    };
+
+
     onMounted(() => {
       getGameDetails(gameId.value);
     });
 
-    return { game, fullImageUrl };
+    return { game, fullImageUrl, favoritar };
   }
 };
 </script>
