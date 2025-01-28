@@ -32,11 +32,11 @@
               <p>{{ game.likes }}</p>
             </div>
             <div class="stat">
-              <span class="icon">🎮</span>
+              <span @click="jogados" class="icon">🎮</span>
               <p>{{ game.plays }}</p>
             </div>
             <div class="stat">
-              <span class="icon">⏳</span>
+              <span @click="desejar" class="icon">⏳</span>
               <p>{{ game.waits }}</p>
             </div>
           </div>
@@ -147,15 +147,25 @@ export default {
       const user=pegarIdUsuario();
 
       daoService.setFavoritos(user,gameId.value);
-      alert('FEITO');
     };
 
+    const desejar = () => {
+      const user=pegarIdUsuario();
+
+      daoService.setDesejos(user,gameId.value);
+    }
+
+    const jogados = () => {
+      const user=pegarIdUsuario();
+
+      daoService.setJogados(user,gameId.value);
+    }
 
     onMounted(() => {
       getGameDetails(gameId.value);
     });
 
-    return { game, fullImageUrl, favoritar };
+    return { game, fullImageUrl, favoritar, desejar, jogados };
   }
 };
 </script>

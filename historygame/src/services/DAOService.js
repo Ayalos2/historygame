@@ -62,18 +62,59 @@ class DAOService {
       } 
     }
   async setFavoritos(user,game) {
-    const userDocRef = doc(db, "userFavoritos", user);
+    const userDocRef = doc(db, "userGames", user);
     try {
       const userDoc = await getDoc(userDocRef);
   
       if (userDoc.exists()) {
         await updateDoc(userDocRef, {
-          gameIds: arrayUnion(game)
+          gameFavoritos: arrayUnion(game)
         });
         console.log("ID do jogo salvo com sucesso na lista!");
       } else {
         await setDoc(userDocRef, {
-          gameIds: [game]
+          gameFavoritos: [game]
+        });
+        console.log("Documento criado e ID do jogo salvo com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao salvar ID do jogo na lista: ", error);
+    }
+  }
+  async setDesejos(user,game) {
+    const userDocRef = doc(db, "userGames", user);
+    try {
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        await updateDoc(userDocRef, {
+          gameDesejos: arrayUnion(game)
+        });
+        console.log("ID do jogo salvo com sucesso na lista!");
+      } else {
+        await setDoc(userDocRef, {
+          gameDesejos: [game]
+        });
+        console.log("Documento criado e ID do jogo salvo com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao salvar ID do jogo na lista: ", error);
+    }
+  }
+
+  async setJogados(user,game) {
+    const userDocRef = doc(db, "userGames", user);
+    try {
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        await updateDoc(userDocRef, {
+          gameJogados: arrayUnion(game)
+        });
+        console.log("ID do jogo salvo com sucesso na lista!");
+      } else {
+        await setDoc(userDocRef, {
+          gameJogados: [game]
         });
         console.log("Documento criado e ID do jogo salvo com sucesso!");
       }
