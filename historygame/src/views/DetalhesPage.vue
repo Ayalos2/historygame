@@ -28,15 +28,15 @@
           <!-- Ícones de Avaliação ao lado das Estrelas -->
           <div class="stats">
             <div class="stat">
-              <span @click="favoritar" class="icon">❤️</span>
+              <span @click="userGames('favoritados')" class="icon">❤️</span>
               <p>{{ game.likes }}</p>
             </div>
             <div class="stat">
-              <span @click="jogados" class="icon">🎮</span>
+              <span @click="userGames('jogados')" class="icon">🎮</span>
               <p>{{ game.plays }}</p>
             </div>
             <div class="stat">
-              <span @click="desejar" class="icon">⏳</span>
+              <span @click="userGames('desejados')" class="icon">⏳</span>
               <p>{{ game.waits }}</p>
             </div>
           </div>
@@ -143,29 +143,17 @@ export default {
     }
 
 
-    const favoritar = () => {
+    const userGames = (field) => {
       const user=pegarIdUsuario();
 
-      daoService.setFavoritos(user,gameId.value);
+      daoService.setFavoritos(user,gameId.value,field);
     };
-
-    const desejar = () => {
-      const user=pegarIdUsuario();
-
-      daoService.setDesejos(user,gameId.value);
-    }
-
-    const jogados = () => {
-      const user=pegarIdUsuario();
-
-      daoService.setJogados(user,gameId.value);
-    }
 
     onMounted(() => {
       getGameDetails(gameId.value);
     });
 
-    return { game, fullImageUrl, favoritar, desejar, jogados };
+    return { game, fullImageUrl, userGames };
   }
 };
 </script>
