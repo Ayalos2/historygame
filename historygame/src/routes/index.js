@@ -9,6 +9,7 @@ import ForgotPassword from '@/views/ForgotPassword.vue';
 import DetalhesPage from '@/views/DetalhesPage.vue';
 import ProfileView from '@/views/ProfileView.vue';
 
+
 const routes = [
   { path: '/', component: HomePage },
   { path: '/jogos', component: JogosPage},
