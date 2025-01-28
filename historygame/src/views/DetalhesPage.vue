@@ -29,15 +29,15 @@
           <div class="stats">
             <div class="stat">
               <span @click="userGames('favoritados')" class="icon">❤️</span>
-              <p>{{ game.likes }}</p>
+              <p>{{ game.favoritados || 0 }}</p>
             </div>
             <div class="stat">
               <span @click="userGames('jogados')" class="icon">🎮</span>
-              <p>{{ game.plays }}</p>
+              <p>{{ game.jogados || 0 }}</p>
             </div>
             <div class="stat">
               <span @click="userGames('desejados')" class="icon">⏳</span>
-              <p>{{ game.waits }}</p>
+              <p>{{ game.desejados || 0 }}</p>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@ export default {
       const user=pegarIdUsuario();
 
       daoService.setFavoritos(user,gameId.value,field);
-    };
+    }
 
     onMounted(() => {
       getGameDetails(gameId.value);
