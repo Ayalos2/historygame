@@ -122,6 +122,56 @@ class DAOService {
       console.error("Erro ao atualizar favoritos: ", error);
     }
   };
+
+  async getuserGames(field, user) {
+    try {
+        console.log(`Buscando jogos do usuário: ${user}, campo: ${field}`);
+
+        const userGamesRef = collection(db, 'userGames');
+        const docRef = doc(userGamesRef, user); 
+        const userGamesSnapshot = await getDoc(docRef); 
+
+        if (!userGamesSnapshot.exists()) {
+            console.log("Nenhum jogo encontrado para o usuário especificado.");
+            return [];
+        }
+
+        const data = userGamesSnapshot.data(); 
+
+        const gameIds = data[field] || []; 
+
+        if (gameIds.length === 0) {
+            console.log("Nenhum ID de jogo encontrado no campo especificado.");
+            return [];
+        }
+
+        const games2Ref = collection(db, 'games2');
+        const gamesPromises = gameIds.map(id => getDoc(doc(games2Ref, id))); 
+        const gamesSnapshots = await Promise.all(gamesPromises); 
+
+
+        const documents = gamesSnapshots
+            .filter(snapshot => snapshot.exists()) 
+            .map(snapshot => {
+                const data = snapshot.data();
+                console.log("Dados do documento games2:", data); 
+                return {
+                    id: snapshot.id, 
+                    name: data.name, 
+                    summary: data.summary, 
+                    coverUrl: data.cover, 
+                    slug: data.slug 
+                };
+            });
+
+        return documents; 
+
+    } catch (error) {
+        console.error("Erro ao buscar os jogos do usuário:", error);
+        throw error; 
+    }
+}
+
 }
 
 export default DAOService;

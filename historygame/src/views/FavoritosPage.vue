@@ -1,11 +1,12 @@
 <template>
+  <div>
   <div class="profile-container d-flex justify-content-center align-items-center mb-4">
     <div class="profile-pic-box">
-      <img src="../assets/default_avatar.jpg" alt="Foto de Perfil" class="profile-pic">
+      <img :src="user?.photoURL || defaultAvatar" alt="Foto de Perfil" class="profile-pic" />
     </div>
     <div class="profile-info-box">
       <div class="profile-info">
-        <h2 class="profile-name">Lev1-NTC</h2>
+        <h2 type="text" class="edit-input">{{ username }}</h2>
         <p class="profile-description">Counter-Striker Player e Casual Gamer.</p>
       </div>
     </div>
@@ -21,9 +22,9 @@
         @input="getGames(searchTerm)">
     </div>
     <div class="btn-group d-flex justify-content-center mb-4" role="group">
-      <button type="button" class="btn btn-dark">Favoritos</button>
-      <button type="button" class="btn btn-dark">Jogados</button>
-      <button type="button" class="btn btn-dark">Lista de Desejos</button>
+      <button type="button" @click="getUserGames('favoritados')" class="btn btn-dark">Favoritos</button>
+      <button type="button" @click="getUserGames('jogados')" class="btn btn-dark">Jogados</button>
+      <button type="button" @click="getUserGames('desejados')" class="btn btn-dark">Lista de Desejos</button>
     </div>
     <div class="card-grid">
       <cardComponent
@@ -62,18 +63,16 @@
       </ul>
     </nav>
   </div>
+</div>
 </template>
-
-
-
-
-
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import cardComponent from '@/components/cardComponent.vue';
 import DAOService from '@/services/DAOService';
 import { useRouter } from 'vue-router';
+import { getAuth } from "firebase/auth";
+
 
 
 const daoService = new DAOService();
@@ -82,6 +81,22 @@ const currentPage = ref(1);
 const pageSize = ref(6);
 const searchTerm = ref('');
 const router = useRouter();
+
+const username = ref("");
+const user = ref(null);
+const defaultAvatar = require('@/assets/default_avatar.jpg');
+
+const auth = getAuth();
+const currentUser = auth.currentUser;
+
+if (currentUser) {
+  const profile = currentUser.providerData[0] || {};
+  username.value = profile.displayName || "Usuário Anônimo";
+  user.value = profile;
+} else {
+  console.warn("Usuário não autenticado");
+}
+
 
 
 const totalPages = computed(() => {
@@ -104,19 +119,9 @@ const pagesToShow = computed(() => {
   return pages;
 });
 
-const searchGamesByName = async (name) => { 
-  try { 
-    const gamesList = await daoService.getByName(name); 
-    return gamesList; 
-  } catch (error) { 
-    console.error('Erro ao buscar jogos:', error); 
-    return []; 
-  } 
-};
-
-const getGames = async (name = '') => {
+const getUserGames = async (field) => {
   try {
-    games.value = name ? await searchGamesByName(name) : await daoService.getAll();
+    games.value = await daoService.getuserGames(field,currentUser.uid);
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
   }
@@ -145,9 +150,8 @@ const detalharJogos = (slug,id) => {
 }
 
 onMounted(() => {
-  getGames();
+  getUserGames('favoritados');
 });
-
 
 </script>
 
