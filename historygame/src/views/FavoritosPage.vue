@@ -19,12 +19,12 @@
         class="form-control search-input" 
         placeholder="Pesquisar..." 
         v-model="searchTerm" 
-        @input="getGames(searchTerm)">
+        >
     </div>
     <div class="btn-group d-flex justify-content-center mb-4" role="group">
-      <button type="button" @click="getUserGames('favoritados')" class="btn btn-dark">Favoritos</button>
-      <button type="button" @click="getUserGames('jogados')" class="btn btn-dark">Jogados</button>
-      <button type="button" @click="getUserGames('desejados')" class="btn btn-dark">Lista de Desejos</button>
+      <button type="button" @click="getUserGames('favoritados',searchTerm)" class="btn btn-dark">Favoritos</button>
+      <button type="button" @click="getUserGames('jogados',searchTerm)" class="btn btn-dark">Jogados</button>
+      <button type="button" @click="getUserGames('desejados',searchTerm)" class="btn btn-dark">Lista de Desejos</button>
     </div>
     <div class="card-grid">
       <cardComponent
@@ -120,9 +120,9 @@ const pagesToShow = computed(() => {
   return pages;
 });
 
-const getUserGames = async (field) => {
+const getUserGames = async (field,name='') => {
   try {
-    games.value = await daoService.getuserGames(field,currentUser.uid);
+    games.value = await daoService.getuserGames(field,currentUser.uid,name);
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
   }

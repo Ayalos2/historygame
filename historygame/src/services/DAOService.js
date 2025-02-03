@@ -123,9 +123,9 @@ class DAOService {
     }
   };
 
-  async getuserGames(field, user) {
+  async getuserGames(field, user, name = '') {
     try {
-        console.log(`Buscando jogos do usuário: ${user}, campo: ${field}`);
+        console.log(`Buscando jogos do usuário: ${user}, campo: ${field}, nome: ${name}`);
 
         const userGamesRef = collection(db, 'userGames');
         const docRef = doc(userGamesRef, user); 
@@ -149,7 +149,6 @@ class DAOService {
         const gamesPromises = gameIds.map(id => getDoc(doc(games2Ref, id))); 
         const gamesSnapshots = await Promise.all(gamesPromises); 
 
-
         const documents = gamesSnapshots
             .filter(snapshot => snapshot.exists()) 
             .map(snapshot => {
@@ -162,6 +161,13 @@ class DAOService {
                     coverUrl: data.cover, 
                     slug: data.slug 
                 };
+            })
+            .filter(game => {
+                // Filtra os jogos pelo nome, se um nome foi fornecido
+                if (name) {
+                    return game.name.toLowerCase().includes(name.toLowerCase());
+                }
+                return true; // Retorna todos os jogos se nenhum nome for fornecido
             });
 
         return documents; 
