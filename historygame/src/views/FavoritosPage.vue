@@ -95,6 +95,7 @@ if (currentUser) {
   user.value = profile;
 } else {
   console.warn("Usuário não autenticado");
+  router.push('/login');
 }
 
 
