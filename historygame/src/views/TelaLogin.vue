@@ -41,6 +41,13 @@ export default {
     const email = ref('');
     const password = ref('');
     const router = useRouter(); 
+    
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      router.push('/favoritos');
+    } 
+    
 
     const handleLogin = async () => {
       try {
@@ -49,7 +56,7 @@ export default {
         email.value='';
         password.value='';
 
-        router.push("/jogos");
+        router.push("/favoritos");
 
       } catch (error) {
         console.log(error.code);
@@ -61,7 +68,7 @@ export default {
       try{
         const result = await signInWithPopup(auth, googleProvider); 
         console.log(result.user); 
-        router.push('/jogos');
+        router.push('/favoritos');
       }
       catch (error) {
         console.log(error.code);

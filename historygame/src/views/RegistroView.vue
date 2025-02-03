@@ -49,6 +49,12 @@ export default {
     const confirmPassword = ref('');
     const router = useRouter(); 
 
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      router.push('/favoritos');
+    } 
+
     const isEmailValid = (email) => { 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
       return emailRegex.test(email); 
