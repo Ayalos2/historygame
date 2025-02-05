@@ -8,6 +8,7 @@ import TelaRegistro from '@/views/RegistroView.vue';
 import ForgotPassword from '@/views/ForgotPassword.vue';
 import DetalhesPage from '@/views/DetalhesPage.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import Comment from '../components/commentComponent.vue'
 
 
 const routes = [
@@ -19,7 +20,8 @@ const routes = [
   { path: '/registro', component: TelaRegistro},
   {path: '/recuperarsenha', component: ForgotPassword},
   {path:'/jogo/:slug/:id', name:"DetalheJogos" ,component: DetalhesPage},
-  {path: '/perfil', component: ProfileView }
+  {path: '/perfil', component: ProfileView },
+  {path: '/comentario', component: Comment}
 
 
 ];

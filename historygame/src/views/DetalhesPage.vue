@@ -14,8 +14,10 @@
 
         <!-- Box de Avaliação -->
         <div class="rating-box">
-          <button class="review-button">Avalie o jogo</button>
+          <button class="review-button" @click="showCommentModal = true">Avalie o jogo</button>
+          <comment-component v-if="showCommentModal" @close="showCommentModal = false" />
         </div>
+
 
         <!-- 5 Estrelas de Avaliação e Ícones ao lado -->
         <div class="rating-stars">
@@ -103,16 +105,20 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import DAOService from '@/services/DAOService'; // Ajuste o caminho conforme necessário
 import { getAuth } from "firebase/auth";
-
+import CommentComponent from '../components/commentComponent.vue';
 
 const daoService = new DAOService();
 
 export default {
   name: 'DetalhesPage',
+  components: {
+    CommentComponent
+  },
   setup() {
     const game = ref({});
     const route = useRoute();
     const gameId = computed(() => route.params.id);
+    const showCommentModal = ref(false);
 
     const fullImageUrl = computed(() => {
       let url = game.value.cover ? (game.value.cover.startsWith('//') ? 'https:' + game.value.cover : game.value.cover) : '../assets/semimagem.png';
@@ -148,12 +154,15 @@ export default {
 
       daoService.setFavoritos(user,gameId.value,field);
     }
+    
+
+
 
     onMounted(() => {
       getGameDetails(gameId.value);
     });
 
-    return { game, fullImageUrl, userGames };
+    return { game, fullImageUrl, userGames, showCommentModal };
   }
 };
 </script>
@@ -241,6 +250,7 @@ export default {
   .stat .icon {
     font-size: 30px;
     color: #000;
+    cursor: pointer;
   }
   
   .stat p {
@@ -352,5 +362,15 @@ export default {
     margin-top: 10px;
     font-size: 14px;
   }
+
+  .comment-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  z-index: 1000;
+}
   </style>
   
