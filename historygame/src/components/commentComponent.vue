@@ -43,35 +43,64 @@
   </template>
   
   <script>
-  export default {
-    data() {
-      return {
-        selectedStars: 0, // Número de estrelas selecionadas
-        reviewTitle: "", // Título da avaliação
-        reviewComment: "", // Comentário da avaliação
+import { ref } from 'vue';
+import { getAuth } from "firebase/auth";
+import DAOService from '../services/DAOService.js'; // Ajuste o caminho conforme necessário
+
+export default {
+    props: {
+        gameId: {
+            type:String,
+            required: true
+        }
+    },
+  setup(props, { emit }) {
+    const selectedStars = ref(0);
+    const reviewTitle = ref("");
+    const reviewComment = ref("");
+
+    const daoService = new DAOService();
+
+    const selectStar = (star) => {
+      selectedStars.value = star;
+      console.log(selectedStars.value);
+    };
+
+    const submitReview = async () => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if(!user) {
+            alert("Usuário não está logado");
+            return;
+        }
+        console.log(props.gameId);
+      const review = {
+        userID: user.uid,
+        gameID: props.gameId,
+        stars: selectedStars.value,
+        title: reviewTitle.value,
+        comment: reviewComment.value
       };
-    },
-    methods: {
-      selectStar(star) {
-        this.selectedStars = star;
-        console.log(this.selectedStars);
-      },
-      submitReview() {
-        const review = {
-          stars: this.selectedStars,
-          title: this.reviewTitle,
-          comment: this.reviewComment,
-        };
-        console.log("Avaliação enviada:", review);
-        alert("Avaliação enviada com sucesso!");
-        this.selectedStars = 0;
-        this.reviewTitle = "";
-        this.reviewComment = "";
-        this.$emit('close');
-      },
-    },
-  };
-  </script>
+      await daoService.saveReview(review);
+      console.log("Avaliação enviada:", review);
+      alert("Avaliação enviada com sucesso!");
+      selectedStars.value = 0;
+      reviewTitle.value = "";
+      reviewComment.value = "";
+      emit('close');
+    };
+
+    return {
+      selectedStars,
+      reviewTitle,
+      reviewComment,
+      selectStar,
+      submitReview,
+    };
+  },
+};
+</script>
   
   <style scoped>
   .modal {

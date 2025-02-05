@@ -15,7 +15,7 @@
         <!-- Box de Avaliação -->
         <div class="rating-box">
           <button class="review-button" @click="showCommentModal = true">Avalie o jogo</button>
-          <comment-component v-if="showCommentModal" @close="showCommentModal = false" />
+          <comment-component v-if="showCommentModal" @close="showCommentModal = false" :game-id="gameId"/>
         </div>
 
 
@@ -117,7 +117,8 @@ export default {
   setup() {
     const game = ref({});
     const route = useRoute();
-    const gameId = computed(() => route.params.id);
+    //const gameId = computed(() => route.params.id);
+    const gameId = ref(route.params.id);
     const showCommentModal = ref(false);
 
     const fullImageUrl = computed(() => {
@@ -162,7 +163,7 @@ export default {
       getGameDetails(gameId.value);
     });
 
-    return { game, fullImageUrl, userGames, showCommentModal };
+    return { game, fullImageUrl, userGames, showCommentModal, gameId };
   }
 };
 </script>

@@ -1,4 +1,4 @@
-import { getDocs, collection, query, where, setDoc, getDoc, doc, arrayUnion, updateDoc, arrayRemove, increment } from 'firebase/firestore';
+import { addDoc, serverTimestamp,getDocs, collection, query, where, setDoc, getDoc, doc, arrayUnion, updateDoc, arrayRemove, increment } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 class DAOService {
@@ -178,6 +178,21 @@ class DAOService {
     }
 }
 
+  async saveReview(review) {
+    try {
+      const docRef = await addDoc(collection(db, "reviews"), {
+        userID: review.userID,
+        gameID: review.gameID,
+        stars: review.stars,
+        title: review.title,
+        comment: review.comment,
+        timestamp: serverTimestamp()
+      });
+      console.log("Avaliação enviada com ID: ", docRef.id);
+    }catch (error){
+      console.error("Erro ao enviar review", error);
+    }
+  }
 }
 
 export default DAOService;
