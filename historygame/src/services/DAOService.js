@@ -195,6 +195,31 @@ class DAOService {
       console.error("Erro ao enviar review", error);
     }
   }
+
+  async getStars(gameId){
+    try{ 
+      const reviewRef = collection(db,'reviews');
+      const q = query(reviewRef, where('gameID', '==', gameId));
+      const querySnapshot = await getDocs(q);
+
+      let totalRating = 0;
+      let reviewCount = 0;
+
+      querySnapshot.forEach((doc) => {
+        totalRating += doc.data().stars;
+        reviewCount++;
+      });
+
+      const averageRating = reviewCount > 0 ? totalRating / reviewCount :0;
+      return averageRating;
+
+
+    } catch (error) {
+      console.error('Erro ao calcular a médias das avaliações', error);
+      return 0;
+    }
+
+  }
 }
 
 export default DAOService;

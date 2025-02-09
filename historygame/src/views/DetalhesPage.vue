@@ -21,12 +21,17 @@
 
         <!-- 5 Estrelas de Avaliação e Ícones ao lado -->
         <div class="rating-stars">
-          <span class="star">⭐</span>
-          <span class="star">⭐</span>
-          <span class="star">⭐</span>
-          <span class="star">⭐</span>
-          <span class="star">⭐</span>
-
+          <span
+            v-for="star in 5"
+            :key="star"
+            class="star"
+          >
+            <i class="far fa-star"></i>
+            <i
+              class="fas fa-star filled"
+              :style="{ width: star <= selectedStars ? '100%' : star - selectedStars < 1 ? ((selectedStars % 1) * 100) + '%' : '0%' }"
+            ></i>
+          </span>
           <!-- Ícones de Avaliação ao lado das Estrelas -->
           <div class="stats">
             <div class="stat">
@@ -120,6 +125,7 @@ export default {
     //const gameId = computed(() => route.params.id);
     const gameId = ref(route.params.id);
     const showCommentModal = ref(false);
+    const selectedStars = ref({});
 
     const fullImageUrl = computed(() => {
       let url = game.value.cover ? (game.value.cover.startsWith('//') ? 'https:' + game.value.cover : game.value.cover) : '../assets/semimagem.png';
@@ -129,6 +135,7 @@ export default {
 
     const getGameDetails = async (id) => {
       try {
+        selectedStars.value = await daoService.getStars(id);
         game.value = await daoService.getById(id);
       } catch (error) {
         console.error('Erro ao buscar detalhes do jogo:', error);
@@ -156,14 +163,11 @@ export default {
       daoService.setFavoritos(user,gameId.value,field);
     }
     
-
-
-
     onMounted(() => {
       getGameDetails(gameId.value);
     });
 
-    return { game, fullImageUrl, userGames, showCommentModal, gameId };
+    return { game, fullImageUrl, userGames, showCommentModal, gameId, selectedStars };
   }
 };
 </script>
@@ -224,17 +228,32 @@ export default {
   }
   
   /* Estrelas de Avaliação */
-  .rating-stars {
-    margin-top: 20px;
-    display: flex;
-    gap: 5px;
-  }
-  
-  .star {
-    font-size: 24px;
-    color: #000;
-  }
-  
+.rating-stars {
+  margin-top: 20px;
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  position: relative;
+  font-size: 1.5rem;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.far.fa-star {
+  color: #ccc;
+}
+
+.fas.fa-star.filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffc107; /* Gold color for stars */
+  overflow: hidden;
+  transition: width 0.2s ease;
+}
+
   /* Box de Estatísticas ao lado das Estrelas */
   .stats {
     display: flex;
