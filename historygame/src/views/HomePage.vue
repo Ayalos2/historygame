@@ -62,8 +62,9 @@ import { useRouter } from 'vue-router';
 const daoService = new DAOService();
 const games = ref([]);
 const currentPage = ref(1);
-const pageSize = ref(9);
+const pageSize = ref(6);
 const router = useRouter();
+const ordenacao = 'favoritados';
 
 const totalPages = computed(() => {
   return Math.ceil(games.value.length / pageSize.value);
@@ -87,7 +88,7 @@ const pagesToShow = computed(() => {
 
 const getGames = async () => {
   try {
-    games.value = await daoService.getAll();
+    games.value = await daoService.getAll(ordenacao);
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
   }

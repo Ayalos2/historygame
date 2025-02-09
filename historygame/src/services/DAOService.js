@@ -1,10 +1,12 @@
-import { addDoc, serverTimestamp,getDocs, collection, query, where, setDoc, getDoc, doc, arrayUnion, updateDoc, arrayRemove, increment } from 'firebase/firestore';
+import { addDoc, orderBy,serverTimestamp,getDocs, collection, query, where, setDoc, getDoc, doc, arrayUnion, updateDoc, arrayRemove, increment } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 class DAOService {
-  async getAll() {
+  async getAll(ordenacao) {
     try {
-      const gamesSnapshot = await getDocs(collection(db, 'games2'));
+      const gamesCollectionRef = collection(db, 'games2');
+      const q = query(gamesCollectionRef, orderBy(ordenacao,'desc'));
+      const gamesSnapshot = await getDocs(q);
 
       const documents = gamesSnapshot.docs.map(doc => {
         const data = doc.data();

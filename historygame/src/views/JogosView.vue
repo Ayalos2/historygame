@@ -9,10 +9,10 @@
         v-model="searchTerm" 
         @input="getGames(searchTerm)">
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-dark">PC</button>
-        <button type="button" class="btn btn-dark">Console</button>
-        <button type="button" class="btn btn-dark">Web</button>
-        <button type="button" class="btn btn-dark">Mobile</button>
+        <button v-show="false" type="button" class="btn btn-dark">PC</button>
+        <button v-show="false" type="button" class="btn btn-dark">Console</button>
+        <button v-show="false" type="button" class="btn btn-dark">Web</button>
+        <button v-show="false" type="button" class="btn btn-dark">Mobile</button>
       </div>
     </div>
     <div class="card-grid">
@@ -66,6 +66,7 @@ const currentPage = ref(1);
 const pageSize = ref(9);
 const searchTerm = ref('');
 const router = useRouter();
+const ordenacao = 'id';
 
 
 const totalPages = computed(() => {
@@ -100,7 +101,7 @@ const searchGamesByName = async (name) => {
 
 const getGames = async (name = '') => {
   try {
-    games.value = name ? await searchGamesByName(name) : await daoService.getAll();
+    games.value = name ? await searchGamesByName(name) : await daoService.getAll(ordenacao);
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
   }
