@@ -229,67 +229,59 @@ class DAOService {
 
   async loadFirstPageReviews(gameId) {
     try {
-      if (!gameId) throw new Error("gameId inválido");
-
       const commentsCollectionRef = collection(db, "reviews");
       const q = query(
         commentsCollectionRef,
         where("gameID", "==", gameId),
-        orderBy("timestamp", "desc"), // Certifique-se de ter um índice criado
+        orderBy("timestamp",'desc'),
         limit(PAGE_SIZE_REVIEW)
       );
 
       const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        lastVisible = null;
-        return [];
+      if (!querySnapshot.empty) {
+        lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Define o último item
       }
 
-      const comments = querySnapshot.docs.map(doc => ({
+      return querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
-
-      this.lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Define o último item carregado
-      return comments;
     } catch (error) {
-      console.error("Error loading reviews:", error.message);
-      throw error;
+      console.error("Erro ao carregar reviews:", error);
+      throw new Error("Erro ao carregar reviews");
     }
   }
 
   async loadNextPageReviews(gameId) {
-    try {
-      if (!gameId) throw new Error("gameId inválido");
-      if (!lastVisible) return []; // Se não há mais páginas, retorna vazio
+    if (!lastVisible) {
+      console.warn("Nenhum comentário restante para carregar.");
+      return [];
+    }
 
+    try {
       const commentsCollectionRef = collection(db, "reviews");
       const q = query(
         commentsCollectionRef,
         where("gameID", "==", gameId),
-        orderBy("timestamp", "desc"),
-        startAfter(this.lastVisible),
+        orderBy("timestamp",'desc'),
+        startAfter(lastVisible), // Pega a partir do último carregado
         limit(PAGE_SIZE_REVIEW)
       );
 
       const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        this.lastVisible = null;
-        return [];
+      if (!querySnapshot.empty) {
+        lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Atualiza o último item visível
+      } else {
+        lastVisible = null; // Se não há mais resultados, impede novas buscas
       }
 
-      const comments = querySnapshot.docs.map(doc => ({
+      return querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
-
-      this.lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Atualiza a referência para a próxima paginação
-      return comments;
     } catch (error) {
-      console.error("Error loading next page of reviews:", error.message);
-      throw error;
+      console.error("Erro ao carregar mais reviews:", error);
+      return [];
     }
   }
   
