@@ -89,18 +89,17 @@
       <div class="header">
         <h1>Avaliações de Usuários</h1>
       </div>
-      <div class="reviews-container">
-        <div class="review-card" v-for="review in game.reviews" :key="review.id">
-          <img :src="review.profileImg" :alt="review.username" class="profile-img" />
-          <div class="review-content">
-            <h3>{{ review.username }}</h3>
-            <div class="stars">
-              <span class="star" v-for="n in review.stars" :key="n">⭐</span>
-            </div>
-            <p>{{ review.comment }}</p>
-          </div>
-        </div>
-      </div>
+      <cardComment 
+      v-for="(review, index) in reviews" 
+      :key="index"
+      :stars="review.stars"
+      :title="review.title"
+      :comment="review.comment"
+      :userPhotoURL="review.userPhotoURL"
+      :userName="review.userName"
+      :timestamp="review.timestamp"
+    />
+    <button @click="loadMoreReviews">Carregar mais comentários</button>
     </div>
   </div>
 </template>
@@ -110,25 +109,32 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import DAOService from '@/services/DAOService'; // Ajuste o caminho conforme necessário
 import { getAuth } from "firebase/auth";
-import CommentComponent from '../components/commentComponent.vue';
+import CommentComponent from '@/components/commentComponent.vue';
+import cardComment from '@/components/cardComment.vue';
 
 const daoService = new DAOService();
 
 export default {
   name: 'DetalhesPage',
   components: {
-    CommentComponent
+    CommentComponent,
+    cardComment,
   },
   setup() {
     const game = ref({});
     const route = useRoute();
-    //const gameId = computed(() => route.params.id);
     const gameId = ref(route.params.id);
     const showCommentModal = ref(false);
     const selectedStars = ref({});
+    const reviews = ref([]); // 🛠️ Agora declarado corretamente
 
     const fullImageUrl = computed(() => {
-      let url = game.value.cover ? (game.value.cover.startsWith('//') ? 'https:' + game.value.cover : game.value.cover) : '../assets/semimagem.png';
+      let url = game.value.cover
+        ? game.value.cover.startsWith('//') 
+          ? 'https:' + game.value.cover 
+          : game.value.cover 
+        : '../assets/semimagem.png';
+
       console.log(url);
       return url.replace('t_thumb', 't_cover_big');
     });
@@ -147,29 +153,49 @@ export default {
       const user = auth.currentUser;
 
       if (user) {
-        const userId = user.uid;
-        console.log("ID do usuário: ", userId);
-        return userId;
+        console.log("ID do usuário: ", user.uid);
+        return user.uid;
       } else {
         console.log("Nenhum usuário está logado.");
         return null;
       }
     }
 
-
     const userGames = (field) => {
-      const user=pegarIdUsuario();
+      const user = pegarIdUsuario();
+      if (user) {
+        daoService.setFavoritos(user, gameId.value, field);
+      }
+    };
 
-      daoService.setFavoritos(user,gameId.value,field);
-    }
-    
-    onMounted(() => {
-      getGameDetails(gameId.value);
+    const loadReview = async () => {
+      console.log('Carregando primeira página de reviews...');
+      try {
+        reviews.value = await daoService.loadFirstPageReviews(gameId.value);
+      } catch (error) {
+        console.error("Erro ao carregar reviews:", error);
+      }
+    };
+
+    const loadMoreReviews = async () => {
+      console.log('Carregando mais reviews...');
+      try {
+        const newReviews = await daoService.loadNextPageReviews(gameId.value);
+        reviews.value = [...reviews.value, ...newReviews];
+      } catch (error) {
+        console.error("Erro ao carregar mais reviews:", error);
+      }
+    };
+
+    onMounted(async () => {
+      await getGameDetails(gameId.value);
+      await loadReview();
     });
 
-    return { game, fullImageUrl, userGames, showCommentModal, gameId, selectedStars };
+    return { game, fullImageUrl, userGames, showCommentModal, gameId, selectedStars, reviews, cardComment, loadMoreReviews };
   }
 };
+
 </script>
   
   <style scoped>

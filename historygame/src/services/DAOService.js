@@ -1,7 +1,11 @@
-import { addDoc, orderBy,serverTimestamp,getDocs, collection, query, where, setDoc, getDoc, doc, arrayUnion, updateDoc, arrayRemove, increment } from 'firebase/firestore';
+import { startAfter,limit,addDoc, orderBy,serverTimestamp,getDocs, collection, query, where, setDoc, getDoc, doc, arrayUnion, updateDoc, arrayRemove, increment } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
+let lastVisible = null;
+let PAGE_SIZE_REVIEW = 3;
+
 class DAOService {
+
   async getAll(ordenacao) {
     try {
       const gamesCollectionRef = collection(db, 'games2');
@@ -184,6 +188,8 @@ class DAOService {
     try {
       const docRef = await addDoc(collection(db, "reviews"), {
         userID: review.userID,
+        userName: review.userName,
+        userPhotoURL: review.userPhotoUrl,
         gameID: review.gameID,
         stars: review.stars,
         title: review.title,
@@ -220,6 +226,75 @@ class DAOService {
     }
 
   }
+
+  async loadFirstPageReviews(gameId) {
+    try {
+      if (!gameId) throw new Error("gameId inválido");
+
+      const commentsCollectionRef = collection(db, "reviews");
+      const q = query(
+        commentsCollectionRef,
+        where("gameID", "==", gameId),
+        orderBy("timestamp", "desc"), // Certifique-se de ter um índice criado
+        limit(PAGE_SIZE_REVIEW)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        lastVisible = null;
+        return [];
+      }
+
+      const comments = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      this.lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Define o último item carregado
+      return comments;
+    } catch (error) {
+      console.error("Error loading reviews:", error.message);
+      throw error;
+    }
+  }
+
+  async loadNextPageReviews(gameId) {
+    try {
+      if (!gameId) throw new Error("gameId inválido");
+      if (!lastVisible) return []; // Se não há mais páginas, retorna vazio
+
+      const commentsCollectionRef = collection(db, "reviews");
+      const q = query(
+        commentsCollectionRef,
+        where("gameID", "==", gameId),
+        orderBy("timestamp", "desc"),
+        startAfter(this.lastVisible),
+        limit(PAGE_SIZE_REVIEW)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        this.lastVisible = null;
+        return [];
+      }
+
+      const comments = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      this.lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Atualiza a referência para a próxima paginação
+      return comments;
+    } catch (error) {
+      console.error("Error loading next page of reviews:", error.message);
+      throw error;
+    }
+  }
+  
+
+
 }
 
 export default DAOService;

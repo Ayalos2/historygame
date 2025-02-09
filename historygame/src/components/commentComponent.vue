@@ -77,6 +77,8 @@ export default {
         console.log(props.gameId);
       const review = {
         userID: user.uid,
+        userPhotoUrl: user.photoURL,
+        userName: user.displayName, 
         gameID: props.gameId,
         stars: selectedStars.value,
         title: reviewTitle.value,

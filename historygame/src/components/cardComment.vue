@@ -1,16 +1,16 @@
 <template>
     <div class="review-container">
         <div class="rating">
-            <span v-for="star in 5" :key="star" class="star" :style="{ color: star <= rating ? '#ffc107' : '#ddd' }">★</span>
+            <span v-for="star in 5" :key="star" class="star" :style="{ color: star <= stars ? '#ffc107' : '#ddd' }">★</span>
         </div>
 
         <h2 class="review-title">{{ title }}</h2>
         <p class="review-text">{{ truncatedText }}</p>
 
         <div class="author-info">
-            <img :src="fullImageUrl" alt="Author Image" class="author-image">
-            <span class="author-name">{{ authorName }}</span>
-            <span class="author-date">{{ date }}</span>
+            <img :src="userPhotoURL" alt="Author Image" class="author-image">
+            <span class="author-name">{{ userName }}</span>
+            <span class="author-date">{{ data }}</span>
         </div>
     </div>
 </template>
@@ -19,7 +19,7 @@
     import { defineProps, computed } from 'vue';
 
     const props = defineProps({
-        rating: {
+        stars: {
             type: Number,
             required: true
         },
@@ -27,21 +27,21 @@
             type: String,
             required: true
         },
-        text: {
+        comment: {
             type: String,
             required: true,
             default: ''
         },
-        authorImageUrl: {
+        userPhotoURL: {
             type: String,
             required: true,
             default: ''
         },
-        authorName: {
+        userName: {
             type: String,
             required: true
         },
-        date: {
+        timestamp: {
             type: String,
             required: true
         }
@@ -50,14 +50,13 @@
     const maxLength = 100; // Limite de caracteres
 
     const truncatedText = computed(() => {
-        return props.text && props.text.length > maxLength
-            ? props.text.substring(0, maxLength) + '...'
-            : props.text;
+        return props.comment && props.comment.length > maxLength
+            ? props.comment.substring(0, maxLength) + '...'
+            : props.comment;
     });
 
-    const fullImageUrl = computed(() => {
-        let url = props.authorImageUrl && props.authorImageUrl.trim() !== '' ? 'https:' + props.authorImageUrl : require('../assets/jogosSemImagem.jpg');
-        return url;
+    const data = computed(() =>  {
+        return props.timestamp.toDate().toLocaleString('pt-BR');
     });
 </script>
 
