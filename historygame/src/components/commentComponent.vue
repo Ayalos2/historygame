@@ -43,7 +43,7 @@
   </template>
   
   <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getAuth } from "firebase/auth";
 import DAOService from '../services/DAOService.js'; // Ajuste o caminho conforme necessário
 
@@ -69,15 +69,18 @@ export default {
       selectedStars.value = star;
       console.log(selectedStars.value);
     };
-
-    const submitReview = async () => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-
-        if(!user) {
+    function getUserID(){
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if(!user) {
             alert("Usuário não está logado");
+            emit('close');
             return;
         }
+      return user;
+    }
+    const submitReview = async () => {
+        const user = getUserID();
         console.log(props.gameId);
       const review = {
         userID: user.uid,
@@ -97,6 +100,7 @@ export default {
       reviewComment.value = "";
       emit('close');
     };
+    onMounted(getUserID);
 
     return {
       selectedStars,
