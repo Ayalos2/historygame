@@ -3,10 +3,10 @@
     <h1>Registrar</h1>
     <form>
       <label for="username">Usuário</label>
-      <input type="text" id="username" v-model="username" required>
+      <input maxlength="15" type="text" id="username" v-model="username" required>
       
       <label for="email">Email</label>
-      <input type="email" id="email" v-model="email" required>
+      <input maxlength="321" type="email" id="email" v-model="email" required>
       
       <label for="password">Senha</label>
       <input type="password" id="password" v-model="password" required>
