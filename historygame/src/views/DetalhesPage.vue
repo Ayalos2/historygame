@@ -34,20 +34,23 @@
           </span>
           <!-- Ícones de Avaliação ao lado das Estrelas -->
           <div class="stats">
-            <div class="stat">
+            <div id="passMouse" class="stat">
               <img v-if="isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoColor.png" />
               <img v-if="!isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoPB.png" />
               <p>{{ game.favoritados || 0 }}</p>
+              <p id="showMessage">Favoritos</p>
             </div>
-            <div class="stat">
+            <div id="passMouse" class="stat">
               <img v-if="isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gameColor.png" />
               <img v-if="!isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gamePB.png" />
               <p>{{ game.jogados || 0 }}</p>
+              <p id="showMessage">Jogados</p>
             </div>
-            <div class="stat">
+            <div id="passMouse" class="stat">
               <img v-if="isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaColor.png" />
               <img v-if="!isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaPB.png" />
               <p>{{ game.desejados || 0 }}</p>
+              <p id="showMessage">Desejados</p>
             </div>
           </div>
         </div>
@@ -172,7 +175,13 @@ export default {
       const user = pegarIdUsuario();
       if (user) {
         await daoService.setFavoritos(user, gameId.value, field);
-        await verificaFavorito();
+        if (field == "favoritados"){
+          isFavorito.value = await daoService.isPlayDesFav(user,gameId.value,field);
+        }else if(field == "desejados"){
+          isDesejado.value = await daoService.isPlayDesFav(user,gameId.value,field);
+        }else if (field == "jogados"){
+          isJogado.value = await daoService.isPlayDesFav(user,gameId.value,field);
+        }  
       }
     };
 
@@ -438,5 +447,13 @@ export default {
   padding: 20px;
   z-index: 1000;
 }
-  </style>
+#showMessage {
+  display: none;
+}
+
+#passMouse:hover #showMessage{
+  display:block;
+}
+
+</style>
   
