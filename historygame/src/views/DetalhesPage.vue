@@ -127,6 +127,7 @@ export default {
     cardComment,
   },
   setup() {
+    
     const game = ref({});
     const route = useRoute();
     const gameId = ref(route.params.id);
@@ -182,6 +183,8 @@ export default {
         }else if (field == "jogados"){
           isJogado.value = await daoService.isPlayDesFav(user,gameId.value,field);
         }  
+      }else {
+        alert('Usuário não autenticado');
       }
     };
 
@@ -221,7 +224,7 @@ export default {
       await verificaFavorito();
     });
 
-    return { isFavorito, isJogado, isDesejado, game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews };
+    return { isFavorito, isJogado, isDesejado, game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews,route };
   }
 };
 
