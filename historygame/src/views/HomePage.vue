@@ -38,7 +38,7 @@
       </nav>
       <!-- Adicionando a seção de comentários -->
       <section class="comments-section">
-        <h2>Comentários</h2>
+        <h2>Últimos Comentários</h2>
         <cardComment 
         v-for="(review, index) in reviews" 
         :key="index"

@@ -315,7 +315,7 @@ class DAOService {
       const q = query(
         commentsCollectionRef,
         orderBy("timestamp",'desc'),
-        limit(6)
+        limit(4)
       );
 
       const querySnapshot = await getDocs(q);
