@@ -35,15 +35,18 @@
           <!-- Ícones de Avaliação ao lado das Estrelas -->
           <div class="stats">
             <div class="stat">
-              <span @click="userGames('favoritados')" class="icon">❤️</span>
+              <img v-if="isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoColor.png" />
+              <img v-if="!isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoPB.png" />
               <p>{{ game.favoritados || 0 }}</p>
             </div>
             <div class="stat">
-              <span @click="userGames('jogados')" class="icon">🎮</span>
+              <img v-if="isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gameColor.png" />
+              <img v-if="!isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gamePB.png" />
               <p>{{ game.jogados || 0 }}</p>
             </div>
             <div class="stat">
-              <span @click="userGames('desejados')" class="icon">⏳</span>
+              <img v-if="isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaColor.png" />
+              <img v-if="!isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaPB.png" />
               <p>{{ game.desejados || 0 }}</p>
             </div>
           </div>
@@ -128,6 +131,9 @@ export default {
     const selectedStars = ref({});
     const reviews = ref([]); // 🛠️ Agora declarado corretamente
     const slug = ref(route.params.slug);
+    const isFavorito = ref({});
+    const isJogado = ref({});
+    const isDesejado = ref({});
 
     const fullImageUrl = computed(() => {
       let url = game.value.cover
@@ -162,10 +168,11 @@ export default {
       }
     }
 
-    const userGames = (field) => {
+    const userGames = async (field) => {
       const user = pegarIdUsuario();
       if (user) {
-        daoService.setFavoritos(user, gameId.value, field);
+        await daoService.setFavoritos(user, gameId.value, field);
+        await verificaFavorito();
       }
     };
 
@@ -187,13 +194,25 @@ export default {
         console.error("Erro ao carregar mais reviews:", error);
       }
     };
+    
+    const verificaFavorito = async () => {
+      const user = pegarIdUsuario();
+      if (user) {
+        isFavorito.value = await daoService.isPlayDesFav(user,gameId.value,'favoritados');
+        isJogado.value = await daoService.isPlayDesFav(user,gameId.value,'jogados');
+        isDesejado.value = await daoService.isPlayDesFav(user,gameId.value,'desejados');
+        console.log(isFavorito);
+      }
+    };
+
 
     onMounted(async () => {
       await getGameDetails(gameId.value);
       await loadReview();
+      await verificaFavorito();
     });
 
-    return { game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews };
+    return { isFavorito, isJogado, isDesejado, game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews };
   }
 };
 

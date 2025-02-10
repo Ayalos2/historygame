@@ -184,6 +184,29 @@ class DAOService {
     }
 }
 
+  async isPlayDesFav(user, game,field){
+    const userDocRef = doc(db, "userGames", user);
+    try {
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()){
+        const userData = userDoc.data()[field] || [];
+        if ( userData.includes(game)){
+          console.log("Está em favorito");
+          return true;
+        }
+        else{
+          console.log(`Não está em ${field}`);
+          return false;
+        }
+      }else{
+        console.log("Documento não encontrado");
+        return false;
+      }
+    }catch (error){
+      console.error("Erro ao verificar GameId em banco", error);
+      return false;
+    }
+  }
   async saveReview(review) {
     try {
       const docRef = await addDoc(collection(db, "reviews"), {
