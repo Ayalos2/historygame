@@ -194,6 +194,7 @@ class DAOService {
         stars: review.stars,
         title: review.title,
         comment: review.comment,
+        slug: review.slug,
         timestamp: serverTimestamp()
       });
       console.log("Avaliação enviada com ID: ", docRef.id);
@@ -282,6 +283,30 @@ class DAOService {
     } catch (error) {
       console.error("Erro ao carregar mais reviews:", error);
       return [];
+    }
+  }
+
+  async loadLastestReviews() {
+    try {
+      const commentsCollectionRef = collection(db, "reviews");
+      const q = query(
+        commentsCollectionRef,
+        orderBy("timestamp",'desc'),
+        limit(6)
+      );
+
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Define o último item
+      }
+
+      return querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+    } catch (error) {
+      console.error("Erro ao carregar reviews:", error);
+      throw new Error("Erro ao carregar reviews");
     }
   }
   

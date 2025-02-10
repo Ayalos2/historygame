@@ -52,6 +52,10 @@ export default {
         gameId: {
             type:String,
             required: true
+        },
+        slug: {
+          type:String,
+          required: true
         }
     },
   setup(props, { emit }) {
@@ -82,7 +86,8 @@ export default {
         gameID: props.gameId,
         stars: selectedStars.value,
         title: reviewTitle.value,
-        comment: reviewComment.value
+        comment: reviewComment.value,
+        slug: props.slug
       };
       await daoService.saveReview(review);
       console.log("Avaliação enviada:", review);

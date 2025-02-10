@@ -15,7 +15,7 @@
         <!-- Box de Avaliação -->
         <div class="rating-box">
           <button class="review-button" @click="showCommentModal = true">Avalie o jogo</button>
-          <comment-component v-if="showCommentModal" @close="showCommentModal = false" :game-id="gameId"/>
+          <comment-component v-if="showCommentModal" @close="showCommentModal = false" :game-id="gameId" :slug="slug"/>
         </div>
 
 
@@ -127,6 +127,7 @@ export default {
     const showCommentModal = ref(false);
     const selectedStars = ref({});
     const reviews = ref([]); // 🛠️ Agora declarado corretamente
+    const slug = ref(route.params.slug);
 
     const fullImageUrl = computed(() => {
       let url = game.value.cover
@@ -192,7 +193,7 @@ export default {
       await loadReview();
     });
 
-    return { game, fullImageUrl, userGames, showCommentModal, gameId, selectedStars, reviews, cardComment, loadMoreReviews };
+    return { game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews };
   }
 };
 

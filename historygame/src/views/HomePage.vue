@@ -39,22 +39,25 @@
       <!-- Adicionando a seção de comentários -->
       <section class="comments-section">
         <h2>Comentários</h2>
-        <comment-box
-          v-for="(comment, index) in comments"
-          :key="index"
-          :title="comment.title"
-          :body="comment.body"
-        />
+        <cardComment 
+        v-for="(review, index) in reviews" 
+        :key="index"
+        :stars="review.stars"
+        :title="review.title"
+        :comment="review.comment"
+        :userPhotoURL="review.userPhotoURL"
+        :userName="review.userName"
+        :timestamp="review.timestamp"
+        @click="detalharJogos(review.slug,review.gameID)"
+      />
       </section>
     </div>
   </template>
-  
-  
-  
-  
-  <script setup>
+
+<script setup>
 import { ref, computed, onMounted } from 'vue';
 import cardComponent from '@/components/cardComponent.vue';
+import cardComment from '@/components/cardComment.vue';
 import DAOService from '@/services/DAOService';
 import { useRouter } from 'vue-router';
 
@@ -65,6 +68,7 @@ const currentPage = ref(1);
 const pageSize = ref(6);
 const router = useRouter();
 const ordenacao = 'favoritados';
+const reviews = ref([]);
 
 const totalPages = computed(() => {
   return Math.ceil(games.value.length / pageSize.value);
@@ -116,8 +120,18 @@ const detalharJogos = (slug, id) => {
   router.push({ name: "DetalheJogos", params: { slug, id } });
 };
 
+const loadLastReview = async () => {
+  console.log('Carregando primeira página de reviews...');
+  try {
+    reviews.value = await daoService.loadLastestReviews();
+  } catch (error) {
+    console.error("Erro ao carregar reviews:", error);
+  }
+};
+
 onMounted(() => {
   getGames();
+  loadLastReview();
 });
 </script>
 
