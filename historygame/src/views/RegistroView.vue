@@ -39,7 +39,7 @@
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
 import { auth, googleProvider } from "../services/firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithPopup,sendEmailVerification } from 'firebase/auth';
+import { updateProfile ,createUserWithEmailAndPassword, signInWithPopup,sendEmailVerification } from 'firebase/auth';
 
 export default {
   setup() {
@@ -84,6 +84,9 @@ export default {
         const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value);
         const user = userCredential.user;
         if (user) {
+          await updateProfile(user, {
+            displayName: username.value
+          });
           await sendEmailVerification(user);
           console.log("Email sent successfully.");
           alert("Email enviado com sucesso");

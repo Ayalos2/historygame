@@ -8,7 +8,7 @@
         <p class="review-text">{{ truncatedText }}</p>
 
         <div class="author-info">
-            <img :src="userPhotoURL" alt="Author Image" class="author-image">
+            <img :src="userPhotoURL || require('@/assets/default_avatar.jpg')" alt="Author Image" class="author-image">            
             <span class="author-name">{{ userName }}</span>
             <span class="author-date">{{ data }}</span>
         </div>
@@ -35,7 +35,7 @@
         userPhotoURL: {
             type: String,
             required: true,
-            default: ''
+            default: '@/assets/default_avatar.jpg'
         },
         userName: {
             type: String,
