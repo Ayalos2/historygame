@@ -1,4 +1,5 @@
 <template>
+  <form  @submit="submitReview">
     <div class="modal">
       <div class="modal-content">
         <span class="close" @click="$emit('close')">&times;</span>
@@ -25,6 +26,7 @@
                 id="title"
                 v-model="reviewTitle"
                 placeholder="Digite o título da sua avaliação"
+                required
               />
             </div>
             <div class="review-form__input-group">
@@ -33,13 +35,15 @@
                 id="comment"
                 v-model="reviewComment"
                 placeholder="Digite o seu comentário"
+                required
               />
             </div>
           </div>
-          <button class="review-form__button" @click="submitReview">Enviar</button>
+          <button class="review-form__button" type="submit">Enviar</button>
         </div>
       </div>
     </div>
+  </form>
   </template>
   
   <script>
