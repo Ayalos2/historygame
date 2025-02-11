@@ -1,20 +1,20 @@
 <template>
   <div class="register-container">
     <h1>Registrar</h1>
-    <form>
+    <form @submit="validateAndRegister">
       <label for="username">Usuário</label>
-      <input maxlength="15" type="text" id="username" v-model="username" required>
+      <input maxlength="15" type="text" id="username" v-model="username" required/>
       
       <label for="email">Email</label>
-      <input maxlength="321" type="email" id="email" v-model="email" required>
+      <input maxlength="321" type="email" id="email" v-model="email" required/>
       
       <label for="password">Senha</label>
-      <input type="password" id="password" v-model="password" required>
+      <input type="password" id="password" v-model="password" required/>
       
       <label for="confirm-password">Confirmar Senha</label>
-      <input type="password" id="confirm-password" v-model="confirmPassword" required>
+      <input type="password" id="confirm-password" v-model="confirmPassword" required/>
       
-      <button @click="validateAndRegister" type="button">Registrar</button>
+      <button type="submit">Registrar</button>
     </form>
     <button @click="registerWithGoogle" class="gsi-material-button">
   <div class="gsi-material-button-state"></div>
@@ -53,7 +53,7 @@ export default {
 
     if (currentUser) {
       router.push('/favoritos');
-    } 
+    }
 
     const isEmailValid = (email) => { 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
