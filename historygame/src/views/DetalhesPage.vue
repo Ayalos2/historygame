@@ -35,20 +35,20 @@
           <!-- Ícones de Avaliação ao lado das Estrelas -->
           <div class="stats">
             <div id="passMouse" class="stat">
-              <img v-if="isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoColor.png" />
-              <img v-if="!isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoPB.png" />
+              <img v-if="!isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoColor.png" />
+              <img v-if="isFavorito" @click="userGames('favoritados')" class="icon" src="../assets/coracaoPB.png" />
               <p>{{ game.favoritados || 0 }}</p>
               <p id="showMessage">Favoritos</p>
             </div>
             <div id="passMouse" class="stat">
-              <img v-if="isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gameColor.png" />
-              <img v-if="!isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gamePB.png" />
+              <img v-if="!isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gameColor.png" />
+              <img v-if="isJogado" @click="userGames('jogados')" class="icon" src="../assets/controle-de-video-gamePB.png" />
               <p>{{ game.jogados || 0 }}</p>
               <p id="showMessage">Jogados</p>
             </div>
             <div id="passMouse" class="stat">
-              <img v-if="isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaColor.png" />
-              <img v-if="!isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaPB.png" />
+              <img v-if="!isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaColor.png" />
+              <img v-if="isDesejado" @click="userGames('desejados')" class="icon" src="../assets/ampulhetaPB.png" />
               <p>{{ game.desejados || 0 }}</p>
               <p id="showMessage">Desejados</p>
             </div>

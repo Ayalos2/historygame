@@ -192,19 +192,19 @@ class DAOService {
         const userData = userDoc.data()[field] || [];
         if ( userData.includes(game)){
           console.log("Está em favorito");
-          return true;
+          return !true;
         }
         else{
           console.log(`Não está em ${field}`);
-          return false;
+          return !false;
         }
       }else{
         console.log("Documento não encontrado");
-        return false;
+        return !false;
       }
     }catch (error){
       console.error("Erro ao verificar GameId em banco", error);
-      return false;
+      return !false;
     }
   }
   async saveReview(review) {
