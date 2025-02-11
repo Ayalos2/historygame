@@ -15,7 +15,7 @@
         <!-- Box de Avaliação -->
         <div class="rating-box">
           <button class="review-button" @click="showCommentModal = true">Avalie o jogo</button>
-          <comment-component v-if="showCommentModal" @close="showCommentModal = false" :game-id="gameId" :slug="slug"/>
+          <comment-component v-if="showCommentModal" @close="handleClose" :game-id="gameId" :slug="slug"/>
         </div>
 
 
@@ -150,9 +150,17 @@ export default {
       return url.replace('t_thumb', 't_cover_big');
     });
 
+    async function getStars(id){
+      try{
+      selectedStars.value = await daoService.getStars(id);
+      }catch (error){
+        console.error('Erro ao buscar as estrelas');
+      }
+    }
+
     const getGameDetails = async (id) => {
       try {
-        selectedStars.value = await daoService.getStars(id);
+        await getStars(id);
         game.value = await daoService.getById(id);
       } catch (error) {
         console.error('Erro ao buscar detalhes do jogo:', error);
@@ -183,6 +191,7 @@ export default {
         }else if (field == "jogados"){
           isJogado.value = await daoService.isPlayDesFav(user,gameId.value,field);
         }  
+        await getGameDetails(gameId.value);
       }else {
         alert('Usuário não autenticado');
       }
@@ -217,6 +226,11 @@ export default {
       }
     };
 
+    function handleClose(){
+      showCommentModal.value = false;
+      loadReview();
+      getStars(gameId.value);
+    }
 
     onMounted(async () => {
       await getGameDetails(gameId.value);
@@ -224,7 +238,7 @@ export default {
       await verificaFavorito();
     });
 
-    return { isFavorito, isJogado, isDesejado, game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews,route };
+    return { isFavorito, isJogado, isDesejado, game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews,route,handleClose };
   }
 };
 
