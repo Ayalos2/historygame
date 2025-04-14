@@ -25,6 +25,10 @@ const props = defineProps({
     type: String,
     required: true,
     default: ''
+  },
+  cliques:{
+    type: String,
+    required: true,
   }
 });
 

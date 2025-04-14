@@ -19,7 +19,8 @@ class DAOService {
           name: data.name,
           summary: data.summary,
           coverUrl: data.cover,
-          slug: data.slug
+          slug: data.slug,
+          cliques: data.cliques
         };
       });
       return documents;
@@ -53,6 +54,7 @@ class DAOService {
   }
 
   async getById(id) {
+    await this.atualizarContador(id); 
     try {
       const gameDoc = await getDoc(doc(db, 'games2', id));
       if (gameDoc.exists()) {
@@ -63,8 +65,38 @@ class DAOService {
     } catch (error) {
       console.error('Error getting game:', error);
       throw new Error('Error getting game');
-    }
+    } 
+    
   }
+     atualizarContador = async (gameId ) => {
+    const itemRef = doc(db, 'games2', gameId); // Substitua 'items' pela coleção desejada
+    const field = 'cliques';
+    const incrementValue = 1;
+    try {
+      // Verifica se o documento existe no Firestore
+      const itemDoc = await getDoc(itemRef);
+  
+      if (itemDoc.exists()) {
+        // Inicializa o campo com 0 caso ele ainda não exista no documento
+        if (!(field in itemDoc.data())) {
+          await updateDoc(itemRef, { [field]: 0 });
+        }
+  
+        // Incrementa ou decrementa o valor do campo
+        await updateDoc(itemRef, {
+          [field]: increment(incrementValue),
+        });
+        console.log(`Valor do campo '${field}' atualizado com sucesso! Incremento: ${incrementValue}.`);
+      } else {
+        // Cria o documento caso ele não exista, com o campo inicializado
+        await setDoc(itemRef, { [field]: incrementValue });
+        console.log(`Documento criado com sucesso! Campo '${field}' inicializado com o valor: ${incrementValue}.`);
+      }
+    } catch (error) {
+      console.error(`Erro ao atualizar o contador no Firestore: ${error}`);
+    }
+  };
+  
 
   async setFavoritos(user, game, field) {
     const userDocRef = doc(db, "userGames", user);
@@ -99,6 +131,7 @@ class DAOService {
     } catch (error) {
       console.error("Erro ao salvar ID do jogo na lista: ", error);
     }
+  
   }
 
   atualizarFavoritos = async (gameId, field, increDecre) => {
