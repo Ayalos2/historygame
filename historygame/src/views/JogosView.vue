@@ -1,55 +1,57 @@
 <template>
-  <div>
-    <h1 class="text-center">Buscar Todos os Jogos</h1>
-    <div class="search-container d-flex justify-content-between align-items-center mb-4">
-      <input 
-        type="text" 
-        class="form-control search-input" 
-        placeholder="Pesquisar..." 
-        v-model="searchTerm" 
-        @input="getGames(searchTerm)">
-      <div class="btn-group" role="group">
-        <button v-show="false" type="button" class="btn btn-dark">PC</button>
-        <button v-show="false" type="button" class="btn btn-dark">Console</button>
-        <button v-show="false" type="button" class="btn btn-dark">Web</button>
-        <button v-show="false" type="button" class="btn btn-dark">Mobile</button>
+  <div class="games-page">
+    <div class="sidebar">
+      <GenreFilter @genre-selected="handleGenreSelected" />
+    </div>
+    <div class="main-content">
+      <h1 class="text-center mb-4">Buscar Todos os Jogos</h1>
+      
+      <div class="search-container d-flex justify-content-between align-items-center mb-4">
+        <input 
+          type="text" 
+          class="form-control search-input" 
+          placeholder="Pesquisar..." 
+          v-model="searchTerm" 
+          @input="getGames(searchTerm)">
       </div>
+
+      <div class="card-grid">
+        <cardComponent
+          v-for="(game, index) in paginatedGames" 
+          :key="index"
+          :titulo="game.name"
+          :descricao="game.summary"
+          :image-src="game.coverUrl"
+          @click="detalharJogos(game.slug, game.id)"
+        />
+      </div>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a class="page-link" href="#" @click.prevent="previousPage">Anterior</a>
+          </li>
+          <li class="page-item" v-if="currentPage > 2">
+            <a class="page-link" href="#" @click.prevent="changePage(1)">1</a>
+          </li>
+          <li class="page-item" v-if="currentPage > 3">
+            <span class="page-link">...</span>
+          </li>
+          <li class="page-item" v-for="page in pagesToShow" :key="page" :class="{ active: currentPage === page }">
+            <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" v-if="currentPage < totalPages - 2">
+            <span class="page-link">...</span>
+          </li>
+          <li class="page-item" v-if="currentPage < totalPages - 1">
+            <a class="page-link" href="#" @click.prevent="changePage(totalPages)">{{ totalPages }}</a>
+          </li>
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <a class="page-link" href="#" @click.prevent="nextPage">Próximo</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <div class="card-grid">
-      <cardComponent
-        v-for="(game, index) in paginatedGames" 
-        :key="index"
-        :titulo="game.name"
-        :descricao="game.summary"
-        :image-src="game.coverUrl"
-        @click="detalharJogos(game.slug,game.id)"
-      />
-    </div>
-    <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-          <a class="page-link" href="#" @click.prevent="previousPage">Previous</a>
-        </li>
-        <li class="page-item" v-if="currentPage > 2">
-          <a class="page-link" href="#" @click.prevent="changePage(1)">1</a>
-        </li>
-        <li class="page-item" v-if="currentPage > 3">
-          <span class="page-link">...</span>
-        </li>
-        <li class="page-item" v-for="page in pagesToShow" :key="page" :class="{ active: currentPage === page }">
-          <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
-        </li>
-        <li class="page-item" v-if="currentPage < totalPages - 2">
-          <span class="page-link">...</span>
-        </li>
-        <li class="page-item" v-if="currentPage < totalPages - 1">
-          <a class="page-link" href="#" @click.prevent="changePage(totalPages)">{{ totalPages }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-          <a class="page-link" href="#" @click.prevent="nextPage">Next</a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </template>
 
@@ -58,8 +60,15 @@ import { ref, computed, onMounted } from 'vue';
 import cardComponent from '@/components/cardComponent.vue';
 import DAOService from '@/services/DAOService';
 import { useRouter } from 'vue-router';
+import GenreFilter from "@/components/genreFilter.vue";
 
+const selectedGenre = ref(null);
+const gamesBySelectedGenre = ref([]);
 
+const handleGenreSelected = (payload) => {
+  selectedGenre.value = payload.genre;
+  gamesBySelectedGenre.value = payload.games;
+};
 const daoService = new DAOService();
 const games = ref([]);
 const currentPage = ref(1);
@@ -135,44 +144,33 @@ onMounted(() => {
 </script>
 
 <style scoped>
-body {
-  font-family: 'Arial', sans-serif;
+.games-page {
+  display: flex;
+  gap: 20px;
 }
 
-.container {
-  padding: 20px;
+.sidebar {
+  flex: 0 0 280px;
+}
+
+.main-content {
+  flex: 1;
 }
 
 .search-container {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   align-items: center;
   margin-bottom: 20px;
 }
 
 .search-input {
   flex: 1;
-  margin-right: 10px;
-}
-
-.btn-group .btn {
-  margin-right: 5px;
-  background: black;
-  color: white;
-  background-color: black;
-  border: 1px solid white;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.btn-group .btn:hover {
-  opacity: 0.7;
 }
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
@@ -181,6 +179,7 @@ body {
   justify-content: center;
   list-style: none;
   padding: 0;
+  margin-top: 20px;
 }
 
 .page-item {
@@ -199,4 +198,5 @@ body {
 .page-item.active .page-link {
   font-weight: bold;
 }
+
 </style>
