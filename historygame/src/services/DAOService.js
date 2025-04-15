@@ -217,6 +217,51 @@ class DAOService {
     }
 }
 
+//Função que serpara os jogos por categoria
+async getGamesByGenre() {
+  try {
+    const gamesCollectionRef = collection(db, 'games2');
+    const gamesSnapshot = await getDocs(gamesCollectionRef);
+
+    const genreMap = {};
+
+    gamesSnapshot.forEach(doc => {
+      const data = doc.data();
+      const game = {
+        id: doc.id,
+        name: data.name,
+        summary: data.summary,
+        coverUrl: data.cover,
+        slug: data.slug
+      };
+
+      // Se o jogo tiver o campo genres
+      if (Array.isArray(data.genres)) {
+        data.genres.forEach(genre => {
+          // Se ainda não existe a categoria, cria o array
+          if (!genreMap[genre]) {
+            genreMap[genre] = [];
+          }
+          // Adiciona o jogo no array da categoria
+          genreMap[genre].push(game);
+        });
+      } else {
+        // Se o jogo não tiver genres definido, adiciona em "Outros"
+        if (!genreMap["Outros"]) {
+          genreMap["Outros"] = [];
+        }
+        genreMap["Outros"].push(game);
+      }
+    });
+
+    return genreMap;
+
+  } catch (error) {
+    console.error("Erro ao buscar jogos por gênero:", error);
+    throw new Error("Erro ao buscar jogos por gênero");
+  }
+}
+
   async isPlayDesFav(user, game,field){
     const userDocRef = doc(db, "userGames", user);
     try {
