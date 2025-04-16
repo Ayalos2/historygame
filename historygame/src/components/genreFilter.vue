@@ -9,41 +9,19 @@
       </div>
   
       <div v-show="showCategories" class="categories-list">
-  <button
-    v-for="(games, genre) in genres"
-    :key="genre"
-    @click="selectGenre(genre)"
-    class="category-button"
+        <button
+          v-for="(games, genre) in genres"
+          :key="genre"
+          @click="selectGenre(genre)"
+          class="category-button"
   >
-    {{ genre }} ({{ games.length }})
-  </button>
-</div>
-
-  
-<div v-if="selectedGenre" class="mt-6">
-  <div class="flex items-center justify-between mb-2">
-    <h4 class="text-md font-semibold">Jogos em {{ selectedGenre }}:</h4>
-    <button @click="clearSelection" class="text-sm text-blue-400">x</button>
-  </div>
-
-  <div v-if="gamesBySelectedGenre.length === 0">Nenhum jogo encontrado.</div>
-
-  <ul class="games-list">
-    <li
-      v-for="game in gamesBySelectedGenre"
-      :key="game.id"
-      @click="goToGame(game.slug, game.id)"
-      class="mb-2 p-2 border rounded cursor-pointer hover:bg-gray-700"
-    >
-      {{ game.name }}
-    </li>
-  </ul>
-</div>
-
+          {{ genre }} ({{ games.length }})
+        </button>
+      </div>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
   import DAOService from "@/services/DAOService";
   
   export default {
@@ -70,19 +48,27 @@
       selectGenre(genre) {
         this.selectedGenre = genre;
         this.gamesBySelectedGenre = this.genres[genre];
-      },
-      clearSelection() {
+        this.$emit('genre-selected', {
+            genre: genre,
+            games: this.genres[genre]
+        });
+       },
+       clearSelection() {
         this.selectedGenre = null;
         this.gamesBySelectedGenre = [];
-      },
+        this.$emit('genre-selected', {
+            genre: null,
+            games: []
+        });
+       },
       goToGame(slug, id) {
         this.$router.push({ name: "DetalheJogos", params: { slug, id } });
       }
     }
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .genre-card {
     background-color: #000;
     color: #fff;
@@ -90,7 +76,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
     min-width: 240px;
-    margin-top: 70px;
+    margin-top: 20px;
   }
   
   .category-button {
@@ -140,6 +126,4 @@
 .games-list li {
   list-style: none;
 }
-
-  </style>
-  
+</style>
