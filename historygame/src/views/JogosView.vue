@@ -63,11 +63,15 @@ import { useRouter } from 'vue-router';
 import GenreFilter from "@/components/genreFilter.vue";
 
 const selectedGenre = ref(null);
-const gamesBySelectedGenre = ref([]);
 
 const handleGenreSelected = (payload) => {
   selectedGenre.value = payload.genre;
-  gamesBySelectedGenre.value = payload.games;
+  if (payload.genre) {
+    games.value = payload.games;
+    currentPage.value = 1;
+  } else {
+    getGames(); // volta a mostrar todos
+  }
 };
 const daoService = new DAOService();
 const games = ref([]);
