@@ -8,7 +8,7 @@ async function importDadosdaAPI(tabela,query) {
     const headers= {
         'Accept': 'application/json',
         'Client-ID': '0ht4yl0a2h5tycn8ighuujkgdmqsyv',
-        'Authorization': 'Bearer sutefjhnsxzmluhjjsyorytah2tadq'
+        'Authorization': 'Bearer c0zbazs70eakhrrx6z1irrfnehi9a5'
       };
     const data = await pegaTodosDados(url, headers, query);
     return data;

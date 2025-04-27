@@ -410,7 +410,29 @@ async getGamesByGenre() {
       throw new Error("Erro ao carregar reviews");
     }
   }
-  
+  async getMaisAcess() {
+    try {
+      const gamesCollectionRef = collection(db, 'games2');
+      const q = query(gamesCollectionRef, orderBy('cliques','desc'),limit(3));
+      const gamesSnapshot = await getDocs(q);
+
+      const documents = gamesSnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.name,
+          summary: data.summary,
+          coverUrl: data.cover,
+          slug: data.slug,
+          cliques: data.cliques
+        };
+      });
+      return documents;
+    } catch (error) {
+      console.error('Error getting documents: ', error);
+      throw new Error('Error getting documents');
+    }
+  }
 
 
 }

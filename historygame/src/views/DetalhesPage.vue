@@ -238,7 +238,21 @@ export default {
       await verificaFavorito();
     });
 
-    return { isFavorito, isJogado, isDesejado, game, fullImageUrl, userGames, showCommentModal, gameId, slug, selectedStars, reviews, cardComment, loadMoreReviews,route,handleClose };
+    return { isFavorito, 
+            isJogado, 
+            isDesejado, 
+            game, 
+            fullImageUrl, 
+            userGames, 
+            showCommentModal, 
+            gameId, 
+            slug, 
+            selectedStars, 
+            reviews, 
+            cardComment, 
+            loadMoreReviews,
+            route,
+            handleClose };
   }
 };
 

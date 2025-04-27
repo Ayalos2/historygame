@@ -1,5 +1,17 @@
 <template>
     <div>
+      <h1 class="text-center">Mais Acessados</h1>
+      <div class="card-grid">
+        <cardComponent
+          v-for="(game, index) in gamesAcessados" 
+          :key="index"
+          :titulo="game.name"
+          :descricao="game.summary"
+          :image-src="game.coverUrl"
+          @click="detalharJogos(game.slug, game.id)"
+        />
+      </div>
+      
       <h1 class="text-center">Mais Favoritados</h1>
       <div class="card-grid">
         <cardComponent
@@ -64,6 +76,7 @@ import { useRouter } from 'vue-router';
 
 const daoService = new DAOService();
 const games = ref([]);
+const gamesAcessados = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(6);
 const router = useRouter();
@@ -93,6 +106,7 @@ const pagesToShow = computed(() => {
 const getGames = async () => {
   try {
     games.value = await daoService.getAll(ordenacao);
+    gamesAcessados.value = await daoService.getMaisAcess();
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
   }
