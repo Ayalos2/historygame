@@ -162,21 +162,40 @@ onMounted(() => {
   flex: 1;
 }
 
-.search-container {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .search-input {
   flex: 1;
+  background: linear-gradient(90deg, black 50%, gray 80%);
+  color: black;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none; /* remove a borda azul padrão */
+  transition: all 0.3s ease; /* transição suave para mudanças */
 }
+
+.search-input::placeholder {
+  color: #555;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* brilho ao redor */
+  background: linear-gradient(90deg, gray, white, black); /* invertendo o degradê ao focar */
+  color: black;
+}
+
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* igual homepage */
+  grid-template-rows: repeat(2, auto); /* igual homepage */
   gap: 20px;
+  max-width: 80%; /* igual homepage */
+  margin: 0 auto; /* igual homepage */
+}
+
+.card-grid > * {
+  max-width: 95%; 
+  margin: 0 auto;
 }
 
 .pagination {
