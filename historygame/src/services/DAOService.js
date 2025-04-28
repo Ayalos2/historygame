@@ -33,9 +33,19 @@ class DAOService {
   async getByName(name) {
     try {
       const gamesRef = collection(db, 'games2');
-      const q = query(gamesRef, where('name', '>=', name), where('name', '<=', name + '\uf8ff'));
+  
+      // Transforma a busca para minúsculo
+      const nameLower = name.toLowerCase();
+  
+      // Filtra pelo campo 'name_lowercase'
+      const q = query(
+        gamesRef,
+        where('name_lowercase', '>=', nameLower),
+        where('name_lowercase', '<=', nameLower + '\uf8ff')
+      );
+  
       const gamesSnapshot = await getDocs(q);
-
+  
       const documents = gamesSnapshot.docs.map(doc => {
         const data = doc.data();
         return {
@@ -51,7 +61,7 @@ class DAOService {
       console.error('Error getting documents: ', error);
       throw new Error('Error getting documents');
     }
-  }
+  } 
 
   async getById(id) {
     await this.atualizarContador(id); 
