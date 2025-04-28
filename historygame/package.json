@@ -9,6 +9,7 @@
     "import-data": "node src/services/importData.js"
   },
   "dependencies": {
+    "@node-ipc/js-queue": "^2.0.3",
     "body-parser": "^2.2.0",
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",

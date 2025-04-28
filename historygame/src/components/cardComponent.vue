@@ -4,25 +4,20 @@
     <div class="card-body">
       <h5 class="card-title">{{ titulo }}</h5>
       <p class="card-text">{{ truncatedDescricao }}</p>
-      <p><strong>Acessos: {{ clickCount }}</strong></p>
+      <p><strong>Acessos: {{ cliques }}</strong></p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, computed, ref } from 'vue';
+import { defineProps, computed } from 'vue';
 
 const props = defineProps({
   titulo: { type: String, required: true },
   descricao: { type: String, required: true, default: '' },
-  imageSrc: { type: String, required: true, default: '' }
+  imageSrc: { type: String, required: true, default: '' },
+  cliques: { type: Number, required: false, default: 0 } // <-- Aqui!
 });
-
-// Contador de cliques
-const cliques = ref(0);
-const incrementClicks = () => {
-  cliques.value += 1;
-};
 
 const maxLength = 100; // Limite de caracteres
 
@@ -39,6 +34,7 @@ const fullImageUrl = computed(() => {
   return url.replace('t_thumb', 't_cover_big');
 });
 </script>
+
 
 <style scoped>
 .custom-card {
