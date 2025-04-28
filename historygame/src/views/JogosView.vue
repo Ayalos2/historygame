@@ -22,6 +22,7 @@
           :titulo="game.name"
           :descricao="game.summary"
           :image-src="game.coverUrl"
+          :cliques="game.cliques"
           @click="detalharJogos(game.slug, game.id)"
         />
       </div>
